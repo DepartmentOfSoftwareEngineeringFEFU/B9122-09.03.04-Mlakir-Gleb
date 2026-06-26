@@ -1,58 +1,93 @@
 # Aura Monorepo
 
-Монорепозиторий дипломного проекта по автоматическому сбору, анализу и визуализации отзывов об университетах.
+Монорепозиторий дипломного проекта по теме: "РАЗРАБОТКА И РЕАЛИЗАЦИЯ ПРОТОТИПА ИНФОРМАЦИОННОЙ СИСТЕМЫ АВТОМАТИЧЕСКОГО СБОРА И ИНТЕЛЛЕКТУАЛЬНОГО АНАЛИЗА ТЕКСТОВЫХ ОТЗЫВОВ С ИСПОЛЬЗОВАНИЕМ МЕТОДОВ ОБРАБОТКИ ЕСТЕСТВЕННОГО ЯЗЫКА".
 
 ## Состав
 
-- `aura-auth` - JWT-аутентификация и авторизация
-- `aura-core` - организации, источники, отзывы, сбор и orchestration анализа
-- `aura-analysis` - FastAPI-сервис анализа, summary и insights
-- `aura-frontend` - React/Vite frontend
-- `aura-exception` - общий Spring Boot starter для `ProblemDetail`
+- `aura-auth` - сервис аутентификации и авторизации на `Spring Boot` и `JWT`
+- `aura-core` - основной backend для организаций, источников, отзывов и orchestration анализа
+- `aura-analysis` - `FastAPI`-сервис интеллектуального анализа, summary и insights
+- `aura-frontend` - web-интерфейс на `React`, `TypeScript` и `Vite`
+- `aura-exception` - общий Spring Boot starter для унифицированной обработки ошибок
 
-## Быстрый запуск через Docker Compose
+## Быстрый старт
 
 1. При необходимости создайте локальный `.env` на основе `.env.example`.
-2. Запустите проект:
+2. Запустите весь стек из корня:
 
 ```bash
-docker compose up --build
+docker compose up --build -d
 ```
 
-После старта будут доступны:
+3. Проверить статус контейнеров:
+
+```bash
+docker compose ps
+```
+
+## Доступные сервисы
 
 - frontend: `http://localhost:5173`
 - auth API: `http://localhost:8080`
 - core API: `http://localhost:8081`
 - analysis API: `http://localhost:8090`
 
-## Что запускает compose
+## Структура запуска
 
-- два отдельных PostgreSQL-контейнера для `aura-auth` и `aura-core`
-- `aura-analysis` как Python/FastAPI сервис
-- `aura-auth` и `aura-core`, собранные из корня монорепозитория
-- `aura-frontend` как статический SPA через `nginx`
+Корневой `docker-compose.yml` поднимает:
 
-## Локальная Java-сборка из корня
+- `aura-auth-db` - PostgreSQL для `aura-auth`
+- `aura-core-db` - PostgreSQL для `aura-core`
+- `aura-auth` - auth backend
+- `aura-core` - основной backend
+- `aura-analysis` - NLP/AI backend
+- `aura-frontend` - SPA через `nginx`
 
-Корневой `pom.xml` теперь поднимает единый Maven reactor для Java-модулей:
+## Корневая Java-сборка
+
+Корневой `pom.xml` поднимает единый Maven reactor для Java-модулей:
 
 ```bash
-mvn -pl aura-core/aura-core-service -am package
 mvn -pl aura-auth/aura-auth-service -am package
+mvn -pl aura-core/aura-core-service -am package
 ```
 
-## Переменные окружения
+## Основные переменные окружения
 
-Основные override-переменные уже перечислены в `.env.example`:
+В `.env.example` уже перечислены ключевые override-переменные:
 
 - `JWT_PRIVATE_KEY`, `JWT_PUBLIC_KEY`, `JWT_ISSUER`
 - `AUTH_DB_*`, `CORE_DB_*`
-- `GOOGLE_AI_API_KEY`
+- `GOOGLE_AI_API_KEY`, `GOOGLE_AI_MODEL`
 - `VITE_API_BASE_URL`, `VITE_AUTH_BASE_URL`
 
-В `.env.example` лежит demo RSA keypair только для локального запуска и защиты диплома. Для любого внешнего окружения ключи нужно заменить.
+Demo RSA keypair в `.env.example` предназначен только для локального запуска и демонстрации дипломного проекта.
 
-## Замечание по Git
+## Полезные команды
 
-Сейчас сервисные директории всё ещё содержат свои внутренние `.git` каталоги. Для публикации именно как одного чистого монорепозитория их нужно убрать при переносе истории в общий корневой git-репозиторий.
+Остановить стек:
+
+```bash
+docker compose down
+```
+
+Пересобрать и поднять заново:
+
+```bash
+docker compose up --build -d
+```
+
+Посмотреть логи:
+
+```bash
+docker compose logs -f
+```
+
+## Документация по сервисам
+
+- [aura-auth](./aura-auth/README.md)
+- [aura-core](./aura-core/README.md)
+- [aura-core-service](./aura-core/aura-core-service/README.md)
+- [aura-analysis](./aura-analysis/README.md)
+- [aura-frontend](./aura-frontend/README.md)
+- [aura-exception](./aura-exception/README.md)

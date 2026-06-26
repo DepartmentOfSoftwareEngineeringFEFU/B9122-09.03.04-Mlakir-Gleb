@@ -1,14 +1,15 @@
-FROM maven:3.9.9-eclipse-temurin-21 AS build
+FROM mirror.gcr.io/library/maven:3.9.9-eclipse-temurin-21 AS build
 
 WORKDIR /workspace
 COPY pom.xml .
+COPY docker/maven-settings.xml /tmp/maven-settings.xml
 COPY aura-exception aura-exception
 COPY aura-auth aura-auth
 COPY aura-core aura-core
 
-RUN mvn -q -pl aura-core/aura-core-service -am -DskipTests package
+RUN mvn -q -s /tmp/maven-settings.xml -pl aura-core/aura-core-service -am -DskipTests package
 
-FROM eclipse-temurin:21-jre
+FROM mirror.gcr.io/library/eclipse-temurin:21-jre
 
 WORKDIR /app
 COPY --from=build /workspace/aura-core/aura-core-service/target/aura-core-service-0.1.0-SNAPSHOT.jar app.jar

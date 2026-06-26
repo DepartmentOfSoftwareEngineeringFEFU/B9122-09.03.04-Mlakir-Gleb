@@ -1,17 +1,21 @@
 # aura-exception
 
-Spring Boot starter для унифицированной обработки HTTP-ошибок на базе `ProblemDetail`.
+Общий Spring Boot starter дипломного проекта по теме: "РАЗРАБОТКА И РЕАЛИЗАЦИЯ ПРОТОТИПА ИНФОРМАЦИОННОЙ СИСТЕМЫ АВТОМАТИЧЕСКОГО СБОРА И ИНТЕЛЛЕКТУАЛЬНОГО АНАЛИЗА ТЕКСТОВЫХ ОТЗЫВОВ С ИСПОЛЬЗОВАНИЕМ МЕТОДОВ ОБРАБОТКИ ЕСТЕСТВЕННОГО ЯЗЫКА".
+
+## Назначение
+
+`aura-exception` предоставляет общий механизм унифицированной обработки HTTP-ошибок на базе `ProblemDetail` для Spring-сервисов монорепозитория.
 
 ## Что входит
 
-- `aura-exception-module`: базовый `AuraException` для бизнес-ошибок.
-- `aura-exception-starter`: автоконфигурация Spring MVC с глобальным обработчиком исключений.
+- `aura-exception-module` - базовый `AuraException` для бизнес-ошибок
+- `aura-exception-starter` - Spring Boot autoconfiguration с глобальным обработчиком исключений
 
-## Требования
+## Технологии
 
 - Java 21
 - Spring Boot 3.3+
-- Servlet-based Spring MVC application
+- Spring MVC
 
 ## Подключение
 
@@ -28,36 +32,19 @@ Starter автоматически регистрирует:
 - `AuraExceptionHandler`
 - `MessageSource` для validation messages из `classpath:errors`
 
-Автоконфигурация активируется только в servlet web application.
+## Что покрывает starter
 
-## Использование
-
-Бизнес-ошибку можно вернуть через `AuraException`:
-
-```java
-@GetMapping("/orders/{id}")
-public OrderDto getOrder(@PathVariable UUID id) {
-    ProblemDetail detail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, "Order not found");
-    detail.setTitle("Order missing");
-    throw new AuraException(HttpStatus.NOT_FOUND, detail);
-}
-```
-
-Для `IllegalArgumentException` starter вернёт `400 Bad Request` с унифицированным `ProblemDetail`.
-
-Также starter покрывает:
-
+- `AuraException`
+- `IllegalArgumentException`
 - `MethodArgumentNotValidException`
 - `HandlerMethodValidationException`
 - `ConstraintViolationException`
 - `MethodArgumentTypeMismatchException`
 - `HttpMessageNotReadableException`
 - `MissingRequestHeaderException`
-- любой необработанный `Exception` через fallback `500`
+- fallback `500` для необработанных исключений
 
-## Формат ответа
-
-Пример unexpected error:
+## Пример ответа
 
 ```json
 {
@@ -75,34 +62,17 @@ public OrderDto getOrder(@PathVariable UUID id) {
 
 Все свойства находятся под префиксом `mlakir.aura.exception`.
 
+Пример:
+
 ```yaml
 mlakir:
   aura:
     exception:
       default-title: Internal Server Error
-      default-type: about:blank
       default-detail: Произошла неожиданная ошибка.
-      default-status: 500
-      include-exception-message: false
       validation-error-title: Validation error
-      validation-error-detail: Ошибка в одном или нескольких полях.
-      validation-error-type: about:blank
-      validation-error-default-field-message: Введите корректные данные
-      constraint-violation-detail: Ошибка в одном или нескольких параметрах.
       malformed-request-title: Malformed request
-      malformed-request-detail: Тело запроса имеет неверный формат.
-      type-mismatch-title: Invalid parameter
-      type-mismatch-detail: Параметр запроса имеет неверный формат или тип.
-      illegal-argument-title: Bad Request
-      illegal-argument-detail: Запрос некорректен, поскольку выбранные параметры указаны неверно или произошла функциональная ошибка.
-      missing-token-title: Missing token
-      missing-token-detail: Пользователь не аутентифицирован.
-      missing-request-header-title: Missing request header
 ```
-
-## Расширение
-
-При необходимости можно переопределить стандартный `AuraProblemDetailFactory` своим bean-ом.
 
 ## Сборка
 

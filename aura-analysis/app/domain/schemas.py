@@ -62,7 +62,7 @@ class InsightsRequest(StrictBaseModel):
 class AnalyzeResponse(StrictBaseModel):
     sentiment: Sentiment
     topic: Topic
-    keywords: list[str] = Field(min_length=1, max_length=5)
+    keywords: list[str] = Field(default_factory=list, max_length=5)
     confidence: float = Field(ge=0.0, le=1.0)
     modelVersion: str = Field(min_length=1)
 
@@ -78,7 +78,7 @@ class BatchAnalyzeRequest(StrictBaseModel):
 class BatchAnalyzeItemResponse(StrictBaseModel):
     sentiment: Sentiment
     topic: Topic
-    keywords: list[str] = Field(min_length=1, max_length=5)
+    keywords: list[str] = Field(default_factory=list, max_length=5)
     confidence: float = Field(ge=0.0, le=1.0)
     modelVersion: str = Field(min_length=1)
 

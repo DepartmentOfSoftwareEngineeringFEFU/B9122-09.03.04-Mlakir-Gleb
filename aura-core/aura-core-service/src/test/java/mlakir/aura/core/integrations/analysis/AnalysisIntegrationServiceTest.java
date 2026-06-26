@@ -69,6 +69,26 @@ class AnalysisIntegrationServiceTest {
     }
 
     @Test
+    void shouldAcceptEmptyKeywordsFromAnalysisService() {
+        when(analysisProperties.getMaxTextLength()).thenReturn(10000);
+        BatchAnalyzeResponseDto response = new BatchAnalyzeResponseDto(List.of(
+                new BatchAnalyzeItemResponseDto(
+                        "POSITIVE",
+                        "TEACHERS",
+                        List.of(),
+                        new BigDecimal("0.93"),
+                        "rule-based-v1"
+                )
+        ));
+        when(analysisFeignClient.analyzeBatch(any())).thenReturn(response);
+
+        List<AnalyzeResponseDto> result = analysisIntegrationService.analyzeBatch(List.of("Очень хорошие преподаватели"));
+
+        assertEquals(1, result.size());
+        assertTrue(result.getFirst().keywords().isEmpty());
+    }
+
+    @Test
     void shouldTruncateLongBatchTextBeforeSendingToAnalysisService() {
         when(analysisProperties.getMaxTextLength()).thenReturn(10000);
         when(analysisFeignClient.analyzeBatch(any())).thenReturn(new BatchAnalyzeResponseDto(List.of(

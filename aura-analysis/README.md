@@ -63,6 +63,12 @@ uvicorn app.main:app --reload --host 0.0.0.0 --port 8090
 
 `requirements.txt` содержит только runtime-зависимости сервиса. Для локальной разработки, тестов и ML training используйте `requirements-dev.txt`.
 
+Production Docker image собирается в multi-stage режиме:
+
+- runtime-зависимости ставятся отдельно от dev/training зависимостей
+- BuildKit cache используется для `pip` и Hugging Face model cache
+- в production image не попадают `app/tests` и `app/ml/training`
+
 ## Основные переменные окружения
 
 - `APP_NAME`

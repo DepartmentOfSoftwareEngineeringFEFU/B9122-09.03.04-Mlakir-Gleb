@@ -136,7 +136,7 @@ public class AnalysisIntegrationService {
         return new AnalyzeResponseDto(
                 item.sentiment(),
                 item.topic(),
-                item.keywords(),
+                item.keywords() == null ? List.of() : item.keywords(),
                 item.confidence(),
                 item.modelVersion()
         );
@@ -147,7 +147,7 @@ public class AnalysisIntegrationService {
             throw new AnalysisIntegrationException("analysis-service returned an empty response");
         }
         if (isBlank(response.sentiment()) || isBlank(response.topic()) || isBlank(response.modelVersion())
-                || response.confidence() == null || response.keywords() == null || response.keywords().isEmpty()) {
+                || response.confidence() == null) {
             throw new AnalysisIntegrationException("analysis-service returned an incomplete response");
         }
     }

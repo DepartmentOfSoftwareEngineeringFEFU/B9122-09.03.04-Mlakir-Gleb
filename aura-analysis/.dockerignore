@@ -5,3 +5,5 @@ reports
 .git
 .idea
 .DS_Store
+app/tests
+app/ml/training

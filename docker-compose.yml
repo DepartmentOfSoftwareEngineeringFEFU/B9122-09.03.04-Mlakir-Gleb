@@ -65,7 +65,7 @@ services:
       SUMMARY_MAX_OUTPUT_CHARS: ${SUMMARY_MAX_OUTPUT_CHARS:-700}
       INSIGHTS_MAX_INPUT_CHARS: ${INSIGHTS_MAX_INPUT_CHARS:-12000}
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8090/health', timeout=5)"]
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8090/ready', timeout=5)"]
       interval: 10s
       timeout: 5s
       retries: 12

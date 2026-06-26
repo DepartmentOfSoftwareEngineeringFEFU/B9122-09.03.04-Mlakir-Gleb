@@ -44,6 +44,7 @@ def test_rubert_mode_uses_artifacts(monkeypatch, rubert_artifacts_dir) -> None:
     app = create_app()
     with TestClient(app) as client:
         health_response = client.get("/health")
+        ready_response = client.get("/ready")
         analyze_response = client.post(
             "/analyze",
             json={"text": "Очень хорошие преподаватели, интересные лекции и сильный курс"},
@@ -58,6 +59,8 @@ def test_rubert_mode_uses_artifacts(monkeypatch, rubert_artifacts_dir) -> None:
         "degradationReason": None,
         "modelVersion": "rubert-embeddings-test",
     }
+    assert ready_response.status_code == 200
+    assert ready_response.json()["status"] == "ready"
 
     assert analyze_response.status_code == 200
     payload = analyze_response.json()
@@ -78,6 +81,7 @@ def test_rubert_mode_falls_back_to_rule_based_when_artifacts_missing(monkeypatch
     app = create_app()
     with TestClient(app) as client:
         health_response = client.get("/health")
+        ready_response = client.get("/ready")
         analyze_response = client.post("/analyze", json={"text": "В общежитии грязно"})
 
     assert health_response.status_code == 200
@@ -91,3 +95,5 @@ def test_rubert_mode_falls_back_to_rule_based_when_artifacts_missing(monkeypatch
     }
     assert analyze_response.status_code == 200
     assert analyze_response.json()["modelVersion"] == "rule-based-0.1.0"
+    assert ready_response.status_code == 503
+    assert ready_response.json()["status"] == "degraded"

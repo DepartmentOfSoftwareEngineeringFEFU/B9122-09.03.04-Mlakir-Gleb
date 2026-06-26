@@ -1,6 +1,6 @@
 ## syntax=docker/dockerfile:1.7
 
-FROM mirror.gcr.io/library/maven:3.9.9-eclipse-temurin-21 AS build
+FROM maven:3.9.9-eclipse-temurin-21 AS build
 
 WORKDIR /workspace
 COPY pom.xml .
@@ -28,7 +28,7 @@ COPY aura-core aura-core
 RUN --mount=type=cache,target=/root/.m2 \
     mvn -q -s /tmp/maven-settings.xml -pl aura-core/aura-core-service -am -DskipTests package
 
-FROM mirror.gcr.io/library/eclipse-temurin:21-jre
+FROM eclipse-temurin:21-jre
 
 WORKDIR /app
 

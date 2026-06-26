@@ -39,13 +39,14 @@ public class AdminBootstrapService implements ApplicationRunner {
             return;
         }
 
-        if (userRepository.existsByLogin(login)) {
-            log.info("Admin bootstrap skipped: user '{}' already exists.", login);
-            return;
-        }
-
         RoleEntity adminRole = roleRepository.findByCode("ROLE_ADMIN")
             .orElseThrow(() -> new IllegalStateException("ROLE_ADMIN was not found"));
+
+        UserEntity existingUser = userRepository.findByLogin(login).orElse(null);
+        if (existingUser != null) {
+            ensureAdminRole(existingUser, adminRole);
+            return;
+        }
 
         UserEntity user = new UserEntity();
         user.setLogin(login);
@@ -60,6 +61,17 @@ public class AdminBootstrapService implements ApplicationRunner {
         credentialRepository.save(credential);
 
         log.info("Bootstrap admin '{}' has been created.", login);
+    }
+
+    private void ensureAdminRole(UserEntity user, RoleEntity adminRole) {
+        if (user.getRoles().stream().anyMatch(role -> "ROLE_ADMIN".equals(role.getCode()))) {
+            log.info("Admin bootstrap skipped: user '{}' already has ROLE_ADMIN.", user.getLogin());
+            return;
+        }
+
+        user.getRoles().add(adminRole);
+        userRepository.save(user);
+        log.info("Admin bootstrap granted ROLE_ADMIN to existing user '{}'.", user.getLogin());
     }
 
     private String trim(String value) {

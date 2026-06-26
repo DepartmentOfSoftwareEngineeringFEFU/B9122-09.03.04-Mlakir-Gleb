@@ -51,7 +51,7 @@ class AdminBootstrapServiceTest {
         when(properties.isEnabled()).thenReturn(true);
         when(properties.getLogin()).thenReturn(" demo-admin ");
         when(properties.getPassword()).thenReturn(" demo123 ");
-        when(userRepository.existsByLogin("demo-admin")).thenReturn(false);
+        when(userRepository.findByLogin("demo-admin")).thenReturn(Optional.empty());
         when(roleRepository.findByCode("ROLE_ADMIN")).thenReturn(Optional.of(adminRole));
         when(userRepository.save(any(UserEntity.class))).thenAnswer(invocation -> {
             UserEntity user = invocation.getArgument(0);
@@ -77,16 +77,23 @@ class AdminBootstrapServiceTest {
 
     @Test
     void shouldSkipBootstrapWhenAdminAlreadyExists() throws Exception {
+        RoleEntity adminRole = new RoleEntity();
+        adminRole.setCode("ROLE_ADMIN");
+        UserEntity existingUser = new UserEntity();
+        existingUser.setId(1L);
+        existingUser.setLogin("demo-admin");
+        existingUser.getRoles().add(adminRole);
+
         when(properties.isEnabled()).thenReturn(true);
         when(properties.getLogin()).thenReturn("demo-admin");
         when(properties.getPassword()).thenReturn("demo123");
-        when(userRepository.existsByLogin("demo-admin")).thenReturn(true);
+        when(roleRepository.findByCode("ROLE_ADMIN")).thenReturn(Optional.of(adminRole));
+        when(userRepository.findByLogin("demo-admin")).thenReturn(Optional.of(existingUser));
 
         adminBootstrapService.run(new DefaultApplicationArguments(new String[0]));
 
         verify(userRepository, never()).save(any(UserEntity.class));
         verify(credentialRepository, never()).save(any(CredentialEntity.class));
-        verify(roleRepository, never()).findByCode(anyString());
     }
 
     @Test
@@ -100,5 +107,26 @@ class AdminBootstrapServiceTest {
         verify(userRepository, never()).existsByLogin(any());
         verify(userRepository, never()).save(any(UserEntity.class));
         verify(credentialRepository, never()).save(any(CredentialEntity.class));
+    }
+
+    @Test
+    void shouldGrantAdminRoleToExistingUserWithoutAdminRole() throws Exception {
+        RoleEntity adminRole = new RoleEntity();
+        adminRole.setCode("ROLE_ADMIN");
+        UserEntity existingUser = new UserEntity();
+        existingUser.setId(1L);
+        existingUser.setLogin("demo-admin");
+
+        when(properties.isEnabled()).thenReturn(true);
+        when(properties.getLogin()).thenReturn("demo-admin");
+        when(properties.getPassword()).thenReturn("demo123");
+        when(roleRepository.findByCode("ROLE_ADMIN")).thenReturn(Optional.of(adminRole));
+        when(userRepository.findByLogin("demo-admin")).thenReturn(Optional.of(existingUser));
+
+        adminBootstrapService.run(new DefaultApplicationArguments(new String[0]));
+
+        verify(userRepository).save(existingUser);
+        verify(credentialRepository, never()).save(any(CredentialEntity.class));
+        assertEquals(1, existingUser.getRoles().size());
     }
 }

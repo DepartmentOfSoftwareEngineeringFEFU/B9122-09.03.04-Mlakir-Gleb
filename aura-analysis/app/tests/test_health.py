@@ -12,6 +12,20 @@ def test_health_endpoint(client) -> None:
     }
 
 
+def test_ready_endpoint(client) -> None:
+    response = client.get("/ready")
+
+    assert response.status_code == 200
+    assert response.json() == {
+        "status": "ready",
+        "mode": "RULE_BASED",
+        "requestedMode": "RULE_BASED",
+        "degraded": False,
+        "degradationReason": None,
+        "modelVersion": "rule-based-0.1.0",
+    }
+
+
 def test_info_endpoint(client) -> None:
     response = client.get("/info")
 

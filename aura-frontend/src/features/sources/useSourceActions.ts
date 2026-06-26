@@ -1,6 +1,10 @@
 import toast from 'react-hot-toast'
 import { useImportReviewsMutation, useRunCollectionMutation, useUpdateSourceMutation } from './queries'
-import { getSourceMutationErrorMessage } from './errors'
+import {
+  getRunCollectionErrorMessage,
+  getRunCollectionToastMessage,
+  getSourceMutationErrorMessage,
+} from './errors'
 import type { SourceResponseDto, UpdateSourceRequestDto } from '../../types/source'
 
 export function useSourceActions({
@@ -18,11 +22,16 @@ export function useSourceActions({
 
   const handleRunCollection = (source: SourceResponseDto) => {
     runCollectionMutation.mutate(source.id, {
-      onSuccess: () => {
-        toast.success(`Сбор для источника «${source.name}» запущен`)
+      onSuccess: (result) => {
+        const feedback = getRunCollectionToastMessage(result, source.name)
+        if (feedback.tone === 'error') {
+          toast.error(feedback.message, { duration: 6000 })
+          return
+        }
+        toast.success(feedback.message)
       },
-      onError: () => {
-        toast.error('Не удалось запустить сбор')
+      onError: (error) => {
+        toast.error(getRunCollectionErrorMessage(error), { duration: 6000 })
       },
     })
   }

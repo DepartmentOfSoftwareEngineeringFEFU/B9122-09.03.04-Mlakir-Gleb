@@ -1,6 +1,7 @@
 import { Badge } from '../../../components/ui/Badge'
 import { Card } from '../../../components/ui/Card'
 import { formatCollectionJobStatus, formatDateTime, truncateText } from '../../../lib/format'
+import { normalizeCollectionJobErrorMessage } from '../errors'
 import type { CollectionJobResponseDto } from '../../../types/collection'
 
 interface CollectionJobsCardProps {
@@ -34,10 +35,7 @@ export function CollectionJobsCard({
       ) : (
         <div className="max-h-80 space-y-3 overflow-y-auto pr-1">
           {jobs.map((job) => (
-            <div
-              key={job.id}
-              className="rounded-2xl border border-slate-200 bg-slate-50 p-4"
-            >
+            <div key={job.id} className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
               <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
                 <div>
                   <p className="font-semibold text-slate-900">{job.sourceName}</p>
@@ -70,11 +68,19 @@ export function CollectionJobsCard({
                     Причина ошибки
                   </p>
                   <p className="mt-1 text-sm text-rose-900">
-                    {truncateText(
-                      job.errorMessage?.trim() || 'Сбор завершился с ошибкой. Подробности не были переданы.',
-                      280,
-                    )}
+                    {truncateText(normalizeCollectionJobErrorMessage(job.errorMessage), 280)}
                   </p>
+                  {job.errorMessage?.trim() &&
+                  normalizeCollectionJobErrorMessage(job.errorMessage).length > 280 ? (
+                    <details className="mt-2">
+                      <summary className="cursor-pointer text-xs font-medium text-rose-700">
+                        Подробнее
+                      </summary>
+                      <p className="mt-2 whitespace-pre-wrap text-sm text-rose-950">
+                        {normalizeCollectionJobErrorMessage(job.errorMessage)}
+                      </p>
+                    </details>
+                  ) : null}
                 </div>
               ) : null}
             </div>

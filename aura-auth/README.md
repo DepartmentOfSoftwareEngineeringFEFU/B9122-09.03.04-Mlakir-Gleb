@@ -46,10 +46,18 @@ Swagger доступен после запуска сервиса по `swagger-
 Из корня проекта:
 
 ```bash
+cp .env.example .env
 docker compose up --build -d
 ```
 
 Сервис будет доступен на `http://localhost:8080`.
+
+При запуске через корневой `docker compose` demo-администратор создаётся только если в `.env` включён bootstrap:
+
+- login: `demo-admin`
+- password: `demo123`
+
+Повторно пользователь не создаётся, если Docker volume с БД уже существует.
 
 ## Локальный запуск модуля
 
@@ -73,6 +81,9 @@ mvn -pl aura-auth-service spring-boot:run
 - `JWT_PUBLIC_KEY` - публичный ключ для верификации JWT
 - `JWT_ISSUER` - issuer токенов, по умолчанию `aura-auth`
 - `JWT_DEFAULT_USER_ROLE` - роль по умолчанию при регистрации
+- `BOOTSTRAP_ADMIN_ENABLED` - включает автосоздание demo-администратора
+- `BOOTSTRAP_ADMIN_LOGIN` - login bootstrap-администратора
+- `BOOTSTRAP_ADMIN_PASSWORD` - пароль bootstrap-администратора
 - `ACCESS_TOKEN_EXPIRATION_SECONDS` - TTL access token
 - `REFRESH_TOKEN_EXPIRATION_SECONDS` - TTL refresh token
 - `CORS_ALLOWED_ORIGINS` - список разрешённых origins

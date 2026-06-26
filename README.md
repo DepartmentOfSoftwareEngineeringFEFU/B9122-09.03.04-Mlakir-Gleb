@@ -12,18 +12,25 @@
 
 ## Быстрый старт
 
-1. При необходимости создайте локальный `.env` на основе `.env.example`.
+1. Создайте локальный `.env` на основе `.env.example`:
+
+```bash
+cp .env.example .env
+```
+
 2. Запустите весь стек из корня:
 
 ```bash
 docker compose up --build -d
 ```
 
-3. Проверить статус контейнеров:
+3. Проверьте статус контейнеров:
 
 ```bash
 docker compose ps
 ```
+
+4. При необходимости дождитесь статуса `healthy` у `aura-analysis`, `aura-auth`, `aura-core`, `aura-frontend`.
 
 ## Доступные сервисы
 
@@ -31,6 +38,17 @@ docker compose ps
 - auth API: `http://localhost:8080`
 - core API: `http://localhost:8081`
 - analysis API: `http://localhost:8090`
+
+Демо-администратор создаётся только если в `.env` включён bootstrap:
+
+- login: `demo-admin`
+- password: `demo123`
+
+Поведение bootstrap:
+
+- пользователь создаётся только на чистой БД
+- при повторном старте с уже существующим volume повторное создание не выполняется
+- если нужно заново получить demo-администратора, сначала удалите volumes
 
 ## Структура запуска
 
@@ -58,10 +76,11 @@ mvn -pl aura-core/aura-core-service -am package
 
 - `JWT_PRIVATE_KEY`, `JWT_PUBLIC_KEY`, `JWT_ISSUER`
 - `AUTH_DB_*`, `CORE_DB_*`
+- `BOOTSTRAP_ADMIN_ENABLED`, `BOOTSTRAP_ADMIN_LOGIN`, `BOOTSTRAP_ADMIN_PASSWORD`
 - `GOOGLE_AI_API_KEY`, `GOOGLE_AI_MODEL`
 - `VITE_API_BASE_URL`, `VITE_AUTH_BASE_URL`
 
-Demo RSA keypair в `.env.example` предназначен только для локального запуска и демонстрации дипломного проекта.
+Demo RSA keypair и demo-учётные данные в `.env.example` предназначены только для локального запуска и демонстрации дипломного проекта.
 
 ## Полезные команды
 
@@ -69,6 +88,12 @@ Demo RSA keypair в `.env.example` предназначен только для 
 
 ```bash
 docker compose down
+```
+
+Остановить стек и удалить volumes, чтобы заново пройти bootstrap demo-данных:
+
+```bash
+docker compose down -v
 ```
 
 Пересобрать и поднять заново:
@@ -82,6 +107,14 @@ docker compose up --build -d
 ```bash
 docker compose logs -f
 ```
+
+## Что Проверить После Старта
+
+- `http://localhost:5173` открывает frontend
+- `http://localhost:8080/actuator/health` возвращает health auth-сервиса
+- `http://localhost:8081/actuator/health` возвращает health core-сервиса
+- `http://localhost:8090/health` возвращает health analysis-сервиса
+- вход под `demo-admin / demo123` работает, если bootstrap включён и БД была чистой
 
 ## Документация по сервисам
 

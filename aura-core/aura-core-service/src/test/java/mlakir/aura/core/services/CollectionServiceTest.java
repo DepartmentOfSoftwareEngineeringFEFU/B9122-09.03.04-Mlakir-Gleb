@@ -120,6 +120,7 @@ class CollectionServiceTest {
         assertEquals(CollectionJobStatus.SUCCESS, response.status());
         assertEquals(1, response.collectedCount());
         assertNull(response.errorMessage());
+        assertEquals("manual-user", response.triggeredBy());
         assertEquals(ReviewStatus.ANALYZED, savedReview.getStatus());
     }
 
@@ -291,6 +292,21 @@ class CollectionServiceTest {
 
         assertEquals("SYSTEM_SCHEDULER", response.triggeredBy());
         verify(sourceCollectionStateService).markScheduledCollectionFinished(any(), any());
+    }
+
+    @Test
+    void shouldStoreRawCurrentUserValueAsTriggeredByForManualCollection() {
+        SourceEntity source = source();
+
+        when(sourceService.getSourceOrThrow(1L)).thenReturn(source);
+        when(currentUserProvider.getCurrentUsername()).thenReturn("1");
+        when(sourceCollectorRegistry.getCollector(SourceType.MANUAL_IMPORT)).thenReturn(sourceCollector);
+        when(sourceCollector.collect(source)).thenReturn(List.of());
+        stubJobMapping(source);
+
+        CollectionJobResponseDto response = collectionService.run(1L);
+
+        assertEquals("1", response.triggeredBy());
     }
 
     private void stubJobMapping(SourceEntity source) {

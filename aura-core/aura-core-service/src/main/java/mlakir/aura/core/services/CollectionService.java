@@ -40,7 +40,7 @@ public class CollectionService {
     private final SourceCollectionStateService sourceCollectionStateService;
 
     public CollectionJobResponseDto run(Long sourceId) {
-        return runInternal(sourceId, "Principal(id=" + currentUserProvider.getCurrentUsername() + ")", false);
+        return runInternal(sourceId, currentUserProvider.getCurrentUsername(), false);
     }
 
     public CollectionJobResponseDto runScheduled(Long sourceId) {

@@ -1,5 +1,6 @@
 package mlakir.aura.core.security;
 
+import mlakir.aura.auth.Principal;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,6 +14,11 @@ public class CurrentUserProvider {
         if (authentication == null || !authentication.isAuthenticated()
                 || authentication instanceof AnonymousAuthenticationToken) {
             return "manual-user";
+        }
+
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof Principal currentUser && currentUser.getId() != null) {
+            return String.valueOf(currentUser.getId());
         }
 
         String name = authentication.getName();

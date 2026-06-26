@@ -75,6 +75,21 @@ def test_keyword_service_extracts_keyphrases_without_embedder() -> None:
     assert any(keyword in keywords for keyword in {"обратная связь", "учебный процесс"})
 
 
+def test_keyword_service_extracts_three_word_phrases() -> None:
+    preprocess_service = PreprocessService()
+    keyword_service = KeywordService(preprocess_service)
+
+    keywords = keyword_service.extract_keywords(
+        "Качество учебного процесса заметно выросло, а обратная связь преподавателей стала быстрее.",
+        topic=None,
+    )
+
+    assert any(
+        keyword in keywords
+        for keyword in {"качество учебного процесса", "обратная связь преподавателей"}
+    )
+
+
 def test_rubert_keyword_reranking_prefers_topic_aware_phrases(rubert_artifacts_dir) -> None:
     preprocess_service = PreprocessService()
     analyzer = RubertEmbeddingsAnalyzer(
@@ -106,6 +121,19 @@ def test_keyword_service_normalizes_common_word_forms() -> None:
 
     assert "преподаватели" in keywords
     assert "преподавателей" not in keywords
+
+
+def test_keyword_service_preserves_natural_adjective_forms_in_phrases() -> None:
+    preprocess_service = PreprocessService()
+    keyword_service = KeywordService(preprocess_service)
+
+    keywords = keyword_service.extract_keywords(
+        "Преподаватели дают обратную связь и прозрачные критерии оценивания.",
+        topic=None,
+    )
+
+    assert "обратный связь" not in keywords
+    assert "обратная связь" in keywords
 
 
 def test_keyword_service_filters_lonely_adjectives() -> None:

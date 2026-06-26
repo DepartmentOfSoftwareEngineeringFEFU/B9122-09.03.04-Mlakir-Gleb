@@ -56,9 +56,10 @@ docker compose up --build -d
 python3.12 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-cp .env.example .env
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8090
 ```
+
+При standalone-запуске переменные окружения при необходимости задаются напрямую через shell или IDE. В составе монорепозитория используется только корневой `.env`.
 
 ## Основные переменные окружения
 

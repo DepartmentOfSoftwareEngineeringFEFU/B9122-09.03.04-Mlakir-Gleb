@@ -85,6 +85,8 @@ docker compose up --build -d
 docker compose up -d aura-core-db
 ```
 
+Команду нужно выполнять из корня монорепозитория.
+
 2. Запустить `aura-analysis-service` на `http://localhost:8090`.
 
 3. Запустить сервис из директории `aura-core`:

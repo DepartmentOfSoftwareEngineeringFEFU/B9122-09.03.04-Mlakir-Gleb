@@ -72,12 +72,16 @@ npm run dev:mockup
 
 ## Переменные окружения
 
-Создайте `.env` на основе `.env.example`:
+Для standalone-запуска frontend может использовать:
 
 ```env
 VITE_API_BASE_URL=http://localhost:8081
 VITE_AUTH_BASE_URL=http://localhost:8080
+VITE_DATA_MODE=real
+VITE_UI_MODE=app
 ```
+
+В составе монорепозитория эти значения задаются через корневой `.env` и `docker compose`.
 
 ## Интеграция с backend
 

@@ -47,21 +47,21 @@ services:
     container_name: aura-analysis
     restart: unless-stopped
     environment:
-      APP_NAME: aura-analysis-service
-      APP_PORT: 8090
-      ANALYSIS_MODE: RUBERT_EMBEDDINGS
-      MODEL_VERSION: rule-based-0.1.0
-      RUBERT_MODEL_NAME: cointegrated/rubert-tiny2
-      RUBERT_SENTIMENT_CLASSIFIER_PATH: app/ml/artifacts/rubert_sentiment_classifier.joblib
-      RUBERT_TOPIC_CLASSIFIER_PATH: app/ml/artifacts/rubert_topic_classifier.joblib
-      RUBERT_METADATA_PATH: app/ml/artifacts/rubert_metadata.json
-      LOG_LEVEL: INFO
+      APP_NAME: ${ANALYSIS_APP_NAME:-aura-analysis-service}
+      APP_PORT: ${ANALYSIS_APP_PORT:-8090}
+      ANALYSIS_MODE: ${ANALYSIS_MODE:-RUBERT_EMBEDDINGS}
+      MODEL_VERSION: ${ANALYSIS_MODEL_VERSION:-rule-based-0.1.0}
+      RUBERT_MODEL_NAME: ${RUBERT_MODEL_NAME:-cointegrated/rubert-tiny2}
+      RUBERT_SENTIMENT_CLASSIFIER_PATH: ${RUBERT_SENTIMENT_CLASSIFIER_PATH:-app/ml/artifacts/rubert_sentiment_classifier.joblib}
+      RUBERT_TOPIC_CLASSIFIER_PATH: ${RUBERT_TOPIC_CLASSIFIER_PATH:-app/ml/artifacts/rubert_topic_classifier.joblib}
+      RUBERT_METADATA_PATH: ${RUBERT_METADATA_PATH:-app/ml/artifacts/rubert_metadata.json}
+      LOG_LEVEL: ${ANALYSIS_LOG_LEVEL:-INFO}
       GOOGLE_AI_API_KEY: ${GOOGLE_AI_API_KEY:-}
       GOOGLE_AI_MODEL: ${GOOGLE_AI_MODEL:-gemini-2.5-flash-lite}
-      GOOGLE_AI_URL: https://generativelanguage.googleapis.com/v1beta/models
-      SUMMARY_MAX_INPUT_LENGTH: 20000
-      SUMMARY_MAX_OUTPUT_CHARS: 700
-      INSIGHTS_MAX_INPUT_CHARS: 12000
+      GOOGLE_AI_URL: ${GOOGLE_AI_URL:-https://generativelanguage.googleapis.com/v1beta/models}
+      SUMMARY_MAX_INPUT_LENGTH: ${SUMMARY_MAX_INPUT_LENGTH:-20000}
+      SUMMARY_MAX_OUTPUT_CHARS: ${SUMMARY_MAX_OUTPUT_CHARS:-700}
+      INSIGHTS_MAX_INPUT_CHARS: ${INSIGHTS_MAX_INPUT_CHARS:-12000}
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8090/health', timeout=5)"]
       interval: 10s
@@ -81,8 +81,8 @@ services:
       aura-auth-db:
         condition: service_healthy
     environment:
-      APP_NAME: aura-auth-service
-      SERVER_PORT: 8080
+      APP_NAME: ${AUTH_APP_NAME:-aura-auth-service}
+      SERVER_PORT: ${AUTH_SERVER_PORT:-8080}
       DB_URL: jdbc:postgresql://aura-auth-db:5432/${AUTH_DB_NAME:-aura}?currentSchema=aura_auth
       DB_USER: ${AUTH_DB_USER:-aura}
       DB_PASS: ${AUTH_DB_PASS:-aura}
@@ -90,8 +90,8 @@ services:
       BOOTSTRAP_ADMIN_ENABLED: ${BOOTSTRAP_ADMIN_ENABLED:-false}
       BOOTSTRAP_ADMIN_LOGIN: ${BOOTSTRAP_ADMIN_LOGIN:-}
       BOOTSTRAP_ADMIN_PASSWORD: ${BOOTSTRAP_ADMIN_PASSWORD:-}
-      CORS_ALLOWED_ORIGINS: http://localhost:5173
-      LOGGING_LEVEL_DEFAULT: INFO
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:5173}
+      LOGGING_LEVEL_DEFAULT: ${AUTH_LOG_LEVEL:-INFO}
     healthcheck:
       test: ["CMD", "curl", "--fail", "--silent", "http://localhost:8080/actuator/health"]
       interval: 10s
@@ -113,18 +113,18 @@ services:
       aura-analysis:
         condition: service_healthy
     environment:
-      APP_NAME: aura-core-service
-      SERVER_PORT: 8081
+      APP_NAME: ${CORE_APP_NAME:-aura-core-service}
+      SERVER_PORT: ${CORE_SERVER_PORT:-8081}
       DB_URL: jdbc:postgresql://aura-core-db:5432/${CORE_DB_NAME:-aura}?currentSchema=aura_core
       DB_USER: ${CORE_DB_USER:-aura}
       DB_PASS: ${CORE_DB_PASS:-aura}
       JWT_PUBLIC_KEY: ${JWT_PUBLIC_KEY:?Copy .env.example to .env or set JWT_PUBLIC_KEY}
       JWT_ISSUER: ${JWT_ISSUER:-aura-auth}
-      CORS_ALLOWED_ORIGINS: http://localhost:5173
-      ANALYSIS_SERVICE_URL: http://aura-analysis:8090
-      LOGGING_LEVEL_DEFAULT: INFO
-      HIBERNATE_SHOW_SQL: "false"
-      HIBERNATE_FORMAT_SQL: "false"
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:5173}
+      ANALYSIS_SERVICE_URL: ${ANALYSIS_SERVICE_URL:-http://aura-analysis:8090}
+      LOGGING_LEVEL_DEFAULT: ${CORE_LOG_LEVEL:-INFO}
+      HIBERNATE_SHOW_SQL: ${HIBERNATE_SHOW_SQL:-false}
+      HIBERNATE_FORMAT_SQL: ${HIBERNATE_FORMAT_SQL:-false}
     healthcheck:
       test: ["CMD", "curl", "--fail", "--silent", "http://localhost:8081/actuator/health"]
       interval: 10s

@@ -61,6 +61,8 @@ docker compose ps
 - `aura-analysis` - NLP/AI backend
 - `aura-frontend` - SPA через `nginx`
 
+Это единственный поддерживаемый `docker compose` сценарий для монорепозитория. Внутренние compose-файлы сервисов не используются.
+
 ## Корневая Java-сборка
 
 Корневой `pom.xml` поднимает единый Maven reactor для Java-модулей:
@@ -81,6 +83,8 @@ mvn -pl aura-core/aura-core-service -am package
 - `VITE_API_BASE_URL`, `VITE_AUTH_BASE_URL`
 
 Demo RSA keypair и demo-учётные данные в `.env.example` предназначены только для локального запуска и демонстрации дипломного проекта.
+
+Отдельные `.env` внутри сервисов в монорепозитории не используются. Основной сценарий запуска поддерживается только через корневой `.env`.
 
 ## Полезные команды
 

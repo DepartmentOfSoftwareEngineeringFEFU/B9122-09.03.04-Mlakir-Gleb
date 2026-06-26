@@ -44,7 +44,9 @@
 docker compose up --build -d
 ```
 
-Локально из директории `aura-core`:
+Это единственный поддерживаемый compose-сценарий для `aura-core-service`.
+
+Локально без Docker Compose, из директории `aura-core`:
 
 ```bash
 ANALYSIS_SERVICE_URL=http://localhost:8090 mvn -pl aura-core-service spring-boot:run

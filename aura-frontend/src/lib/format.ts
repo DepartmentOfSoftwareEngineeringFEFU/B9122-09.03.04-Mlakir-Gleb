@@ -73,13 +73,13 @@ export function formatCollectionJobStatus(value: CollectionJobStatus) {
 }
 
 export function formatUserRole(value?: UserRole | null) {
-  if (!value) return 'Пользователь'
+  if (!value) return 'Аналитик'
 
   switch (value) {
     case 'ROLE_ADMIN':
       return 'Администратор'
     case 'ROLE_USER':
-      return 'Пользователь'
+      return 'Аналитик'
     default:
       return value
   }

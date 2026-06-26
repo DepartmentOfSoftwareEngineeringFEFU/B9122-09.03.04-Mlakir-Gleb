@@ -39,7 +39,7 @@ public class CollectionJobLifecycleService {
     public CollectionJobEntity finishFailed(CollectionJobEntity job, Exception exception) {
         job.setStatus(CollectionJobStatus.FAILED);
         job.setFinishedAt(OffsetDateTime.now());
-        job.setErrorMessage(truncateErrorMessage(exception.getMessage()));
+        job.setErrorMessage(truncateErrorMessage(resolveErrorMessage(exception)));
         return fetchDetailed(collectionJobRepository.save(job));
     }
 
@@ -57,5 +57,18 @@ public class CollectionJobLifecycleService {
             return message;
         }
         return message.substring(0, 2000);
+    }
+
+    private String resolveErrorMessage(Exception exception) {
+        if (exception == null) {
+            return "Сбор завершился с ошибкой. Подробности отсутствуют.";
+        }
+
+        String message = exception.getMessage();
+        if (message != null && !message.isBlank()) {
+            return message;
+        }
+
+        return "Сбор завершился с ошибкой. Причина: " + exception.getClass().getSimpleName();
     }
 }

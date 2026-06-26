@@ -10,9 +10,10 @@ const realCollectionApi = {
     )
     return data
   },
-  getJobs: async () => {
+  getJobs: async (limit = 10) => {
     const { data } = await coreClient.get<CollectionJobResponseDto[]>(
       '/api/collection/jobs',
+      { params: { limit } },
     )
     return data
   },

@@ -44,6 +44,8 @@ services:
     build:
       context: ./aura-analysis
       dockerfile: Dockerfile
+      args:
+        RUBERT_MODEL_NAME: ${RUBERT_MODEL_NAME:-cointegrated/rubert-tiny2}
     container_name: aura-analysis
     restart: unless-stopped
     environment:

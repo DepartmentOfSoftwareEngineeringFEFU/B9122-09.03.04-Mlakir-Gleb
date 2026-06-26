@@ -3,6 +3,7 @@ package mlakir.aura.core.services;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -31,6 +32,7 @@ import mlakir.aura.exception.AuraException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.data.domain.Pageable;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -307,6 +309,39 @@ class CollectionServiceTest {
         CollectionJobResponseDto response = collectionService.run(1L);
 
         assertEquals("1", response.triggeredBy());
+    }
+
+    @Test
+    void shouldReturnLatestJobsUsingRequestedLimit() {
+        SourceEntity source = source();
+        CollectionJobEntity job = new CollectionJobEntity();
+        job.setId(200L);
+        job.setSource(source);
+        job.setStatus(CollectionJobStatus.FAILED);
+        job.setStartedAt(OffsetDateTime.now());
+        job.setCollectedCount(0);
+        job.setErrorMessage("network timeout");
+        job.setTriggeredBy("manual-user");
+
+        when(collectionJobRepository.findAllByOrderByStartedAtDescIdDesc(
+                argThat((Pageable pageable) -> pageable.getPageNumber() == 0 && pageable.getPageSize() == 5)
+        )).thenReturn(List.of(job));
+        when(collectionJobMapper.toDto(job)).thenReturn(new CollectionJobResponseDto(
+                job.getId(),
+                source.getId(),
+                source.getName(),
+                job.getStatus(),
+                job.getStartedAt(),
+                job.getFinishedAt(),
+                job.getCollectedCount(),
+                job.getErrorMessage(),
+                job.getTriggeredBy()
+        ));
+
+        List<CollectionJobResponseDto> result = collectionService.findLatestJobs(5);
+
+        assertEquals(1, result.size());
+        assertEquals(200L, result.getFirst().id());
     }
 
     private void stubJobMapping(SourceEntity source) {

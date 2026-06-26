@@ -1,6 +1,6 @@
 import { Badge } from '../../../components/ui/Badge'
 import { Card } from '../../../components/ui/Card'
-import { formatCollectionJobStatus, formatDateTime } from '../../../lib/format'
+import { formatCollectionJobStatus, formatDateTime, truncateText } from '../../../lib/format'
 import type { CollectionJobResponseDto } from '../../../types/collection'
 
 interface CollectionJobsCardProps {
@@ -36,26 +36,47 @@ export function CollectionJobsCard({
           {jobs.map((job) => (
             <div
               key={job.id}
-              className="flex flex-col gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-4 lg:flex-row lg:items-center lg:justify-between"
+              className="rounded-2xl border border-slate-200 bg-slate-50 p-4"
             >
-              <div>
-                <p className="font-semibold text-slate-900">{job.sourceName}</p>
-                <p className="text-sm text-slate-500">Запуск: {formatDateTime(job.startedAt)}</p>
+              <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+                <div>
+                  <p className="font-semibold text-slate-900">{job.sourceName}</p>
+                  <p className="text-sm text-slate-500">Запуск: {formatDateTime(job.startedAt)}</p>
+                  {job.finishedAt ? (
+                    <p className="text-sm text-slate-500">
+                      Завершено: {formatDateTime(job.finishedAt)}
+                    </p>
+                  ) : null}
+                </div>
+                <div className="flex items-center gap-3">
+                  <Badge
+                    variant={
+                      job.status === 'SUCCESS'
+                        ? 'positive'
+                        : job.status === 'FAILED'
+                          ? 'negative'
+                          : 'warning'
+                    }
+                  >
+                    {formatCollectionJobStatus(job.status)}
+                  </Badge>
+                  <span className="text-sm text-slate-500">{job.collectedCount ?? 0} отзывов</span>
+                </div>
               </div>
-              <div className="flex items-center gap-3">
-                <Badge
-                  variant={
-                    job.status === 'SUCCESS'
-                      ? 'positive'
-                      : job.status === 'FAILED'
-                        ? 'negative'
-                        : 'warning'
-                  }
-                >
-                  {formatCollectionJobStatus(job.status)}
-                </Badge>
-                <span className="text-sm text-slate-500">{job.collectedCount ?? 0} отзывов</span>
-              </div>
+
+              {job.status === 'FAILED' ? (
+                <div className="mt-3 rounded-xl border border-rose-200 bg-rose-50 px-3 py-2">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-rose-700">
+                    Причина ошибки
+                  </p>
+                  <p className="mt-1 text-sm text-rose-900">
+                    {truncateText(
+                      job.errorMessage?.trim() || 'Сбор завершился с ошибкой. Подробности не были переданы.',
+                      280,
+                    )}
+                  </p>
+                </div>
+              ) : null}
             </div>
           ))}
         </div>

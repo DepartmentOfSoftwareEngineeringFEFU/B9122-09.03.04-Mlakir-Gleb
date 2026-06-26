@@ -18,6 +18,7 @@ import mlakir.aura.core.repositories.CollectionJobRepository;
 import mlakir.aura.core.repositories.ReviewRepository;
 import mlakir.aura.core.security.CurrentUserProvider;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -68,8 +69,9 @@ public class CollectionService {
     }
 
     @Transactional(readOnly = true)
-    public List<CollectionJobResponseDto> findAllJobs() {
-        return collectionJobRepository.findAll().stream()
+    public List<CollectionJobResponseDto> findLatestJobs(int limit) {
+        int sanitizedLimit = Math.max(1, Math.min(limit, 100));
+        return collectionJobRepository.findAllByOrderByStartedAtDescIdDesc(PageRequest.of(0, sanitizedLimit)).stream()
                 .map(collectionJobMapper::toDto)
                 .toList();
     }

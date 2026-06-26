@@ -55,11 +55,13 @@ docker compose up --build -d
 ```bash
 python3.12 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+pip install -r requirements-dev.txt
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8090
 ```
 
 При standalone-запуске переменные окружения при необходимости задаются напрямую через shell или IDE. В составе монорепозитория используется только корневой `.env`.
+
+`requirements.txt` содержит только runtime-зависимости сервиса. Для локальной разработки, тестов и ML training используйте `requirements-dev.txt`.
 
 ## Основные переменные окружения
 

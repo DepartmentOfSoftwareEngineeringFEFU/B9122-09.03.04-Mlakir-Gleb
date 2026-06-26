@@ -716,8 +716,8 @@ class MockDatabase {
     return job
   }
 
-  getJobs() {
-    return this.state.jobs.slice(0, 10)
+  getJobs(limit = 10) {
+    return this.state.jobs.slice(0, limit)
   }
 
   private filteredReviews(filters: ReviewFilters) {
@@ -945,5 +945,5 @@ export const mockDashboardApi = {
 
 export const mockCollectionApi = {
   runCollection: async (sourceId: number) => asyncResult(mockDb.runCollection(sourceId), 220),
-  getJobs: async () => asyncResult(mockDb.getJobs()),
+  getJobs: async (limit = 10) => asyncResult(mockDb.getJobs(limit)),
 }

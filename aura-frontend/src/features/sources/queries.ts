@@ -10,6 +10,7 @@ import type {
 
 export const ACTIVE_COLLECTION_POLL_INTERVAL = 5_000
 export const IDLE_COLLECTION_POLL_INTERVAL = 30_000
+const COLLECTION_JOBS_LIMIT = 10
 
 function getCollectionRefetchInterval(
   data: CollectionJobResponseDto[] | undefined,
@@ -38,7 +39,7 @@ export function useSourcesQuery(
 export function useCollectionJobsQuery() {
   return useQuery({
     queryKey: ['collection', 'jobs'],
-    queryFn: collectionApi.getJobs,
+    queryFn: () => collectionApi.getJobs(COLLECTION_JOBS_LIMIT),
     refetchInterval: (query) => getCollectionRefetchInterval(query.state.data),
   })
 }

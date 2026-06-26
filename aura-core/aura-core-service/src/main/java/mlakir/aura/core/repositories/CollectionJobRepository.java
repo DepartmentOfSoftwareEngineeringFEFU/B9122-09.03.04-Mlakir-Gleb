@@ -1,8 +1,10 @@
 package mlakir.aura.core.repositories;
 
+import java.util.List;
 import java.util.Optional;
 import mlakir.aura.core.enums.CollectionJobStatus;
 import mlakir.aura.core.models.CollectionJobEntity;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,6 +14,9 @@ public interface CollectionJobRepository extends JpaRepository<CollectionJobEnti
     @Override
     @EntityGraph(attributePaths = "source")
     java.util.List<CollectionJobEntity> findAll();
+
+    @EntityGraph(attributePaths = "source")
+    List<CollectionJobEntity> findAllByOrderByStartedAtDescIdDesc(Pageable pageable);
 
     @EntityGraph(attributePaths = "source")
     @Query("select cj from CollectionJobEntity cj where cj.id = :id")

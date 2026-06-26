@@ -45,7 +45,7 @@ function ReviewDetailsContent({ reviewId }: { reviewId: number }) {
   return (
     <div className="space-y-6">
       <PageHeader
-        title={`Отзыв #${review.id}`}
+        title="Отзыв"
         description="Детальная карточка отзыва, его метаданных и результата автоматического анализа."
         actions={
           <Link to={backToReviews}>

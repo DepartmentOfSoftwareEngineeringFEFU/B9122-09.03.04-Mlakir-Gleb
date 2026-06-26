@@ -23,7 +23,6 @@
 
 Поддерживаются источники:
 
-- `MANUAL_IMPORT`
 - `TABITURIENT`
 - `OTZOVIK`
 - `VUZOPEDIA`
@@ -40,7 +39,6 @@ Security реализуется через `aura-auth-starter`.
 ## Основные возможности
 
 - CRUD для организаций и источников
-- импорт CSV для `MANUAL_IMPORT`
 - HTML scraping для `TABITURIENT`, `OTZOVIK` и `VUZOPEDIA`
 - ручной и scheduled запуск сбора
 - batch-анализ новых отзывов через `aura-analysis`
@@ -116,7 +114,6 @@ ANALYSIS_SERVICE_URL=http://localhost:8090 mvn -pl aura-core-service spring-boot
 
 1. Создать организацию через `/api/organizations`
 2. Создать источник
-3. Для `MANUAL_IMPORT` загрузить CSV через `/api/sources/{sourceId}/import`
-4. Для scraping-источников запустить `/api/collection/run/{sourceId}`
-5. Дождаться анализа через `aura-analysis`
-6. Просматривать отзывы, dashboard, summary и insights
+3. Для scraping-источников запустить `/api/collection/run/{sourceId}`
+4. Дождаться анализа через `aura-analysis`
+5. Просматривать отзывы, dashboard, summary и insights

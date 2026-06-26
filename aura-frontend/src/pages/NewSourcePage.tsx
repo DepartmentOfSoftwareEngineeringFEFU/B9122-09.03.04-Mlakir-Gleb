@@ -39,7 +39,7 @@ export function NewSourcePage() {
         <PageHeader title="Новый источник" />
         <EmptyState
           title="Сначала создайте организацию"
-          description="Источник ручного импорта, Tabiturient, Otzovik или Vuzopedia должен принадлежать организации."
+          description="Источник Tabiturient, Otzovik или Vuzopedia должен принадлежать организации."
           actionLabel="Создать организацию"
           onAction={() => navigate('/organizations/new')}
         />
@@ -71,7 +71,7 @@ export function NewSourcePage() {
                   ? 'Например, Отзывы Tabiturient о ДВФУ'
                   : selectedType === 'VUZOPEDIA'
                     ? 'Например, Vuzopedia ДВФУ'
-                    : 'Например, Импорт отзывов'
+                    : 'Например, Otzovik ДВФУ'
               }
               error={form.formState.errors.name?.message}
               {...form.register('name')}
@@ -139,7 +139,7 @@ function SourceBaseUrlField({
   error,
   register,
 }: {
-  selectedType: 'MANUAL_IMPORT' | 'TABITURIENT' | 'OTZOVIK' | 'VUZOPEDIA'
+  selectedType: 'TABITURIENT' | 'OTZOVIK' | 'VUZOPEDIA'
   error?: string
   register: UseFormRegisterReturn<'baseUrl'>
 }) {
@@ -176,12 +176,5 @@ function SourceBaseUrlField({
     )
   }
 
-  return (
-    <Input
-      label="Адрес источника"
-      readOnly
-      error={error}
-      {...register}
-    />
-  )
+  return <Input label="Адрес источника" error={error} {...register} />
 }

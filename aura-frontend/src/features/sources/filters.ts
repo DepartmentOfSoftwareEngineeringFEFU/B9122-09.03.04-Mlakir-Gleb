@@ -7,7 +7,6 @@ import {
 } from '../../lib/searchParams'
 
 const sourceTypeValues = [
-  'MANUAL_IMPORT',
   'TABITURIENT',
   'OTZOVIK',
   'VUZOPEDIA',

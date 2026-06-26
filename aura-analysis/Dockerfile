@@ -19,8 +19,11 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     python -m pip install --upgrade pip setuptools wheel \
     && python -m pip install -r requirements.txt
 
-RUN --mount=type=cache,target=/opt/huggingface \
-    python -c "from transformers import AutoTokenizer, AutoModel; AutoTokenizer.from_pretrained('${RUBERT_MODEL_NAME}'); AutoModel.from_pretrained('${RUBERT_MODEL_NAME}')"
+RUN mkdir -p /opt/huggingface
+
+RUN --mount=type=cache,target=/root/.cache/huggingface \
+    python -c "from transformers import AutoTokenizer, AutoModel; cache_dir='/root/.cache/huggingface'; AutoTokenizer.from_pretrained('${RUBERT_MODEL_NAME}', cache_dir=cache_dir); AutoModel.from_pretrained('${RUBERT_MODEL_NAME}', cache_dir=cache_dir)" \
+    && cp -a /root/.cache/huggingface/. /opt/huggingface/
 
 FROM python:3.12-slim AS runtime
 

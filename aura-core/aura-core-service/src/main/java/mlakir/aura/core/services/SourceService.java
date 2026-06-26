@@ -36,6 +36,10 @@ public class SourceService {
 
     @Transactional
     public SourceResponseDto create(CreateSourceRequestDto requestDto) {
+        if (requestDto.type() == SourceType.MANUAL_IMPORT) {
+            throw sourceExceptionFactory.unsupportedSourceType(requestDto.type());
+        }
+
         OrganizationEntity organization = organizationService.getEntityOrThrow(requestDto.organizationId());
         validateOrganizationActive(organization);
 

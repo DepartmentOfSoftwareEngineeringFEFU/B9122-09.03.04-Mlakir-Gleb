@@ -120,6 +120,61 @@ docker compose logs -f
 - `http://localhost:8090/health` возвращает health analysis-сервиса
 - вход под `demo-admin / demo123` работает, если bootstrap включён и БД была чистой
 
+## Скриншоты Реализации
+
+Ниже приведены основные экраны пользовательского интерфейса системы. Скриншоты хранятся в `docs/screenshots/` и отображаются в виде галереи, удобной для просмотра на GitHub.
+
+<table>
+  <tr>
+    <td align="center" width="33%">
+      <img src="docs/screenshots/login.png" alt="Экран авторизации" />
+      <br />
+      <strong>Авторизация</strong>
+      <br />
+      Вход администратора или аналитика в систему
+    </td>
+    <td align="center" width="33%">
+      <img src="docs/screenshots/dashboard.png" alt="Главный дашборд" />
+      <br />
+      <strong>Дашборд</strong>
+      <br />
+      Сводная аналитика по отзывам и организациям
+    </td>
+    <td align="center" width="33%">
+      <img src="docs/screenshots/sources.png" alt="Список источников" />
+      <br />
+      <strong>Источники</strong>
+      <br />
+      Управление источниками сбора отзывов
+    </td>
+  </tr>
+  <tr>
+    <td align="center" width="33%">
+      <img src="docs/screenshots/reviews.png" alt="Список отзывов" />
+      <br />
+      <strong>Отзывы</strong>
+      <br />
+      Просмотр, фильтрация и анализ отзывов
+    </td>
+    <td align="center" width="33%">
+      <img src="docs/screenshots/review-details.png" alt="Карточка отзыва" />
+      <br />
+      <strong>Карточка отзыва</strong>
+      <br />
+      Полный текст, метаданные, summary и результат анализа
+    </td>
+    <td align="center" width="33%">
+      <img src="docs/screenshots/organizations.png" alt="Список организаций" />
+      <br />
+      <strong>Организации</strong>
+      <br />
+      Список организаций и контекст аналитики по ним
+    </td>
+  </tr>
+</table>
+
+Если позже будут подготовлены финальные PNG или JPG-скриншоты, их можно просто положить в `docs/screenshots/` с теми же базовыми именами и обновить расширения в этом разделе.
+
 ## Документация по сервисам
 
 - [aura-auth](./aura-auth/README.md)

@@ -3,7 +3,6 @@ import { IS_MOCK_DATA_MODE } from '../config/appMode'
 import { mockSourcesApi } from '../mocks/mockApi'
 import type {
   CreateSourceRequestDto,
-  ManualImportResponseDto,
   SourceFilters,
   SourceResponseDto,
   UpdateSourceRequestDto,
@@ -34,16 +33,6 @@ const realSourcesApi = {
     const { data } = await coreClient.patch<SourceResponseDto>(
       `/api/sources/${id}`,
       payload,
-    )
-    return data
-  },
-  importReviews: async (sourceId: number, file: File) => {
-    const formData = new FormData()
-    formData.append('file', file)
-
-    const { data } = await coreClient.post<ManualImportResponseDto>(
-      `/api/sources/${sourceId}/import`,
-      formData,
     )
     return data
   },

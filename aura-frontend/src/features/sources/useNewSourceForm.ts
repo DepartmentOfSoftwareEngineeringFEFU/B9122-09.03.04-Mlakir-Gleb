@@ -4,7 +4,6 @@ import { useForm, useWatch } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 import {
-  MANUAL_IMPORT_BASE_URL,
   createSourceSchema,
   defaultCreateSourceValues,
   mapCreateSourceFormToDto,
@@ -34,21 +33,9 @@ export function useNewSourceForm() {
   })
 
   useEffect(() => {
-    const currentBaseUrl = form.getValues('baseUrl').trim()
-
-    if (selectedType === 'MANUAL_IMPORT') {
-      if (currentBaseUrl !== MANUAL_IMPORT_BASE_URL) {
-        form.setValue('baseUrl', MANUAL_IMPORT_BASE_URL, {
-          shouldDirty: true,
-          shouldValidate: true,
-        })
-      }
-      return
-    }
-
-    if (currentBaseUrl === MANUAL_IMPORT_BASE_URL) {
+    if (form.getValues('baseUrl').trim() === '') {
       form.setValue('baseUrl', '', {
-        shouldDirty: true,
+        shouldDirty: false,
         shouldValidate: false,
       })
     }

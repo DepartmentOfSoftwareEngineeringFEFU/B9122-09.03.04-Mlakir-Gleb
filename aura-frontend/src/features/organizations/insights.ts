@@ -20,10 +20,10 @@ export function buildOrganizationInsightsErrorMessage(error: unknown) {
   }
 
   if (hasApiErrorStatus(error, 503) || isNetworkApiError(error)) {
-    return 'ИИ-отчёт временно недоступен'
+    return 'Аналитический отчёт временно недоступен'
   }
 
-  return 'ИИ-отчёт временно недоступен'
+  return 'Аналитический отчёт временно недоступен'
 }
 
 export function buildOrganizationInsightsMeta(

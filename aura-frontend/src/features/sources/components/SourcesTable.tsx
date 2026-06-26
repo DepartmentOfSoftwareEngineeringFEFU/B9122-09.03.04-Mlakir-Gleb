@@ -8,7 +8,6 @@ import type { SourceResponseDto } from '../../../types/source'
 interface SourcesTableProps {
   isAdmin: boolean
   onEdit: (source: SourceResponseDto) => void
-  onImport: (source: SourceResponseDto) => void
   onRunCollection: (source: SourceResponseDto) => void
   runCollectionPendingId?: number
   sources: SourceResponseDto[]
@@ -17,7 +16,6 @@ interface SourcesTableProps {
 export function SourcesTable({
   isAdmin,
   onEdit,
-  onImport,
   onRunCollection,
   runCollectionPendingId,
   sources,
@@ -92,11 +90,6 @@ export function SourcesTable({
                     >
                       Запустить сбор
                     </Button>
-                    {source.type === 'MANUAL_IMPORT' && (
-                      <Button size="sm" variant="secondary" onClick={() => onImport(source)}>
-                        Импортировать отзывы
-                      </Button>
-                    )}
                     <Button size="sm" variant="ghost" onClick={() => onEdit(source)}>
                       Редактировать
                     </Button>

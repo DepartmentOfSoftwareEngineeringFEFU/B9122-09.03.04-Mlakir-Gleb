@@ -88,20 +88,3 @@ export function useRunCollectionMutation() {
     },
   })
 }
-
-export function useImportReviewsMutation() {
-  const queryClient = useQueryClient()
-
-  return useMutation({
-    mutationFn: (payload: { sourceId: number; file: File }) =>
-      sourcesApi.importReviews(payload.sourceId, payload.file),
-    onSuccess: async () => {
-      await Promise.all([
-        queryClient.invalidateQueries({ queryKey: ['sources'] }),
-        queryClient.invalidateQueries({ queryKey: ['reviews'] }),
-        queryClient.invalidateQueries({ queryKey: ['dashboard'] }),
-        queryClient.invalidateQueries({ queryKey: ['collection', 'jobs'] }),
-      ])
-    },
-  })
-}

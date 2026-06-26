@@ -95,14 +95,10 @@ export function getRunCollectionErrorMessage(error: unknown) {
 export function getSourceMutationErrorMessage(
   error: unknown,
   options: {
-    action: 'create' | 'update' | 'import'
+    action: 'create' | 'update'
     sourceType?: SourceType
   },
 ) {
-  if (options.action === 'import') {
-    return getApiErrorMessage(error, 'Не удалось импортировать отзывы')
-  }
-
   const isUrlValidationError =
     (options.sourceType === 'OTZOVIK' || options.sourceType === 'VUZOPEDIA') &&
     hasApiErrorStatus(error, 400)

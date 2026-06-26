@@ -7,8 +7,6 @@ import type {
   UpdateSourceRequestDto,
 } from '../../types/source'
 import { DEFAULT_SCHEDULE_INTERVAL_MINUTES } from './schedule.js'
-
-export const MANUAL_IMPORT_BASE_URL = 'manual://csv'
 const TABITURIENT_URL_PREFIXES = [
   'https://tabiturient.ru/vuzu/',
   'http://tabiturient.ru/vuzu/',
@@ -22,7 +20,7 @@ const VUZOPEDIA_URL_PREFIXES = [
   'http://vuzopedia.ru/vuz/',
 ] as const
 
-const sourceTypeValues = ['MANUAL_IMPORT', 'TABITURIENT', 'OTZOVIK', 'VUZOPEDIA'] as const satisfies readonly SourceType[]
+const sourceTypeValues = ['TABITURIENT', 'OTZOVIK', 'VUZOPEDIA'] as const satisfies readonly SourceType[]
 
 const collectionModeValues = ['MANUAL', 'SCHEDULED'] as const satisfies readonly CollectionMode[]
 const scheduleIntervalMin = 15
@@ -75,17 +73,6 @@ export const createSourceSchema = z
           message: 'Максимальный интервал сбора — 43200 минут',
         })
       }
-    }
-
-    if (values.type === 'MANUAL_IMPORT') {
-      if (values.baseUrl.trim() !== MANUAL_IMPORT_BASE_URL) {
-        context.addIssue({
-          code: z.ZodIssueCode.custom,
-          path: ['baseUrl'],
-          message: 'Для ручного импорта используется служебный адрес manual://csv',
-        })
-      }
-      return
     }
 
     const baseUrl = values.baseUrl.trim()
@@ -167,8 +154,8 @@ export type UpdateSourceFormValues = z.output<typeof updateSourceSchema>
 export const defaultCreateSourceValues: CreateSourceFormInput = {
   organizationId: '',
   name: '',
-  type: 'MANUAL_IMPORT',
-  baseUrl: MANUAL_IMPORT_BASE_URL,
+  type: 'TABITURIENT',
+  baseUrl: '',
   collectionMode: 'MANUAL',
   scheduleEnabled: false,
   scheduleIntervalMinutes: null,
@@ -216,8 +203,6 @@ export function getSourceUrlHelpText(type: SourceType) {
       return 'Укажите ссылку на страницу отзывов организации на otzovik.com. Например: https://otzovik.com/reviews/dalnevostochniy_federalniy_universitet_dvfu/'
     case 'VUZOPEDIA':
       return 'Укажите ссылку на страницу отзывов вуза на vuzopedia.ru. Например: https://vuzopedia.ru/vuz/3281/otziv'
-    case 'MANUAL_IMPORT':
-      return 'Для ручного импорта отзывы загружаются через CSV-файл после создания источника.'
     default:
       return ''
   }

@@ -56,7 +56,7 @@ export function ReviewContentCard({
             onClick={onSummaryClick}
             isLoading={isReviewSummaryPending}
           >
-            {isReviewSummaryPending ? 'Генерируем...' : 'Конспект от ИИ'}
+            {isReviewSummaryPending ? 'Генерируем...' : 'Краткое содержание'}
           </Button>
           {isAdmin && summaryData && (
             <Button

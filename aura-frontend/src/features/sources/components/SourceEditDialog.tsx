@@ -42,7 +42,7 @@ function formatSourceTypeLabel(type: SourceResponseDto['type']) {
     case 'VUZOPEDIA':
       return 'Vuzopedia'
     default:
-      return 'Ручной импорт'
+      return type
   }
 }
 
@@ -130,27 +130,18 @@ export function SourceEditDialog({
             />
           </div>
 
-          {source.type === 'MANUAL_IMPORT' ? (
-            <Input
-              label="Адрес источника"
-              readOnly
-              error={form.formState.errors.baseUrl?.message}
-              {...form.register('baseUrl')}
-            />
-          ) : (
-            <Input
-              label="Адрес источника"
-              placeholder={
-                source.type === 'OTZOVIK'
-                  ? 'https://otzovik.com/reviews/dalnevostochniy_federalniy_universitet_dvfu/'
-                  : source.type === 'VUZOPEDIA'
-                    ? 'https://vuzopedia.ru/vuz/3281/otziv'
+          <Input
+            label="Адрес источника"
+            placeholder={
+              source.type === 'OTZOVIK'
+                ? 'https://otzovik.com/reviews/dalnevostochniy_federalniy_universitet_dvfu/'
+                : source.type === 'VUZOPEDIA'
+                  ? 'https://vuzopedia.ru/vuz/3281/otziv'
                   : 'https://tabiturient.ru/vuzu/dvfu/'
-              }
-              error={form.formState.errors.baseUrl?.message}
-              {...form.register('baseUrl')}
-            />
-          )}
+            }
+            error={form.formState.errors.baseUrl?.message}
+            {...form.register('baseUrl')}
+          />
 
           {scheduleEnabled && (
             <Select

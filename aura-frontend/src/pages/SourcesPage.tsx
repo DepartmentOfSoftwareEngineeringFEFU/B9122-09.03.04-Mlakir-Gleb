@@ -3,7 +3,6 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { CollectionJobsCard } from '../features/sources/components/CollectionJobsCard'
 import { ErrorState } from '../components/common/ErrorState'
 import { EmptyState } from '../components/common/EmptyState'
-import { ImportReviewsDialog } from '../components/common/ImportReviewsDialog'
 import { Loader } from '../components/common/Loader'
 import { PageHeader } from '../components/common/PageHeader'
 import { Button } from '../components/ui/Button'
@@ -29,7 +28,6 @@ import { useHasRole } from '../features/auth/access'
 export function SourcesPage() {
   const navigate = useNavigate()
   const [searchParams, setSearchParams] = useSearchParams()
-  const [importSource, setImportSource] = useState<SourceResponseDto | null>(null)
   const [editingSource, setEditingSource] = useState<SourceResponseDto | null>(null)
   const isAdmin = useHasRole('ROLE_ADMIN')
   const organizationsQuery = useOrganizationsQuery()
@@ -56,15 +54,12 @@ export function SourcesPage() {
   const hasActiveFilters = Object.values(sourceFilters).some((value) => value !== undefined)
   const {
     handleEditSubmit,
-    handleImportReviews,
     handleRunCollection,
-    importReviewsMutation,
     runCollectionMutation,
     updateSourceMutation,
   } = useSourceActions({
     editingSource,
     onEditClose: () => setEditingSource(null),
-    onImportClose: () => setImportSource(null),
   })
 
   const setParam = (key: string, value?: string) =>
@@ -116,7 +111,7 @@ export function SourcesPage() {
           description={
             hasActiveFilters
               ? 'Попробуйте изменить параметры фильтрации.'
-              : 'Создайте источник ручного импорта или источник Tabiturient, Otzovik либо Vuzopedia для автоматического сбора отзывов.'
+              : 'Создайте источник Tabiturient, Otzovik или Vuzopedia для автоматического сбора отзывов.'
           }
           actionLabel={hasActiveFilters ? undefined : 'Создать источник'}
           onAction={emptyStateActionPath ? () => navigate(emptyStateActionPath) : undefined}
@@ -125,7 +120,6 @@ export function SourcesPage() {
         <SourcesTable
           isAdmin={isAdmin}
           onEdit={setEditingSource}
-          onImport={setImportSource}
           onRunCollection={handleRunCollection}
           runCollectionPendingId={
             runCollectionMutation.isPending ? runCollectionMutation.variables : undefined
@@ -139,16 +133,6 @@ export function SourcesPage() {
         isLoading={jobsQuery.isLoading}
         isError={jobsQuery.isError}
       />
-
-      {importSource && (
-        <ImportReviewsDialog
-          open
-          sourceName={importSource.name}
-          isLoading={importReviewsMutation.isPending}
-          onClose={() => setImportSource(null)}
-          onSubmit={(file) => handleImportReviews(importSource, file)}
-        />
-      )}
 
       {editingSource && (
         <SourceEditDialog

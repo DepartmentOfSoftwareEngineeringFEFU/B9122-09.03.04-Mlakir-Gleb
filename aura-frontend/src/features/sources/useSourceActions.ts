@@ -1,5 +1,5 @@
 import toast from 'react-hot-toast'
-import { useImportReviewsMutation, useRunCollectionMutation, useUpdateSourceMutation } from './queries'
+import { useRunCollectionMutation, useUpdateSourceMutation } from './queries'
 import {
   getRunCollectionErrorMessage,
   getRunCollectionToastMessage,
@@ -10,15 +10,12 @@ import type { SourceResponseDto, UpdateSourceRequestDto } from '../../types/sour
 export function useSourceActions({
   editingSource,
   onEditClose,
-  onImportClose,
 }: {
   editingSource: SourceResponseDto | null
   onEditClose: () => void
-  onImportClose: () => void
 }) {
   const updateSourceMutation = useUpdateSourceMutation()
   const runCollectionMutation = useRunCollectionMutation()
-  const importReviewsMutation = useImportReviewsMutation()
 
   const handleRunCollection = (source: SourceResponseDto) => {
     runCollectionMutation.mutate(source.id, {
@@ -34,25 +31,6 @@ export function useSourceActions({
         toast.error(getRunCollectionErrorMessage(error), { duration: 6000 })
       },
     })
-  }
-
-  const handleImportReviews = (source: SourceResponseDto | null, file: File) => {
-    if (!source) return
-
-    importReviewsMutation.mutate(
-      { sourceId: source.id, file },
-      {
-        onSuccess: (result) => {
-          toast.success(
-            `Импорт завершён: добавлено ${result.importedCount}, дубликатов ${result.duplicateCount}, некорректных строк ${result.invalidCount}`,
-          )
-          onImportClose()
-        },
-        onError: (error) => {
-          toast.error(getSourceMutationErrorMessage(error, { action: 'import' }))
-        },
-      },
-    )
   }
 
   const handleEditSubmit = (payload: { id: number; data: UpdateSourceRequestDto }) => {
@@ -74,9 +52,7 @@ export function useSourceActions({
 
   return {
     handleEditSubmit,
-    handleImportReviews,
     handleRunCollection,
-    importReviewsMutation,
     runCollectionMutation,
     updateSourceMutation,
   }

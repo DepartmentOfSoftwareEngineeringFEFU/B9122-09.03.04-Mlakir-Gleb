@@ -2,7 +2,6 @@ import type { CollectionMode, SourceType } from '../types/source'
 import type { ReviewSentiment, ReviewTopic } from '../types/review'
 
 export const sourceTypeOptions: Array<{ value: SourceType; label: string }> = [
-  { value: 'MANUAL_IMPORT', label: 'Ручной импорт' },
   { value: 'TABITURIENT', label: 'Tabiturient' },
   { value: 'OTZOVIK', label: 'Otzovik' },
   { value: 'VUZOPEDIA', label: 'Vuzopedia' },

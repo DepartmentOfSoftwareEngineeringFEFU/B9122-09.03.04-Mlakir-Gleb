@@ -1,6 +1,6 @@
 import type { OrganizationShortResponseDto } from './organization'
 
-export type SourceType = 'MANUAL_IMPORT' | 'TABITURIENT' | 'OTZOVIK' | 'VUZOPEDIA'
+export type SourceType = 'TABITURIENT' | 'OTZOVIK' | 'VUZOPEDIA'
 
 export type CollectionMode = 'MANUAL' | 'SCHEDULED'
 
@@ -41,15 +41,6 @@ export interface UpdateSourceRequestDto {
   scheduleEnabled?: boolean
   scheduleIntervalMinutes?: number | null
   description?: string
-}
-
-export interface ManualImportResponseDto {
-  sourceId: number
-  fileName: string
-  totalRows: number
-  importedCount: number
-  duplicateCount: number
-  invalidCount: number
 }
 
 export interface SourceFilters {

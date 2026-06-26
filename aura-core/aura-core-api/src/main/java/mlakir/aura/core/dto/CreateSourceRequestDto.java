@@ -17,7 +17,7 @@ public record CreateSourceRequestDto(
         @NotNull
         @Schema(
                 description = "Source type",
-                allowableValues = {"MANUAL_IMPORT", "TABITURIENT", "OTZOVIK", "VUZOPEDIA"},
+                allowableValues = {"TABITURIENT", "OTZOVIK", "VUZOPEDIA"},
                 example = "TABITURIENT"
         )
         SourceType type,

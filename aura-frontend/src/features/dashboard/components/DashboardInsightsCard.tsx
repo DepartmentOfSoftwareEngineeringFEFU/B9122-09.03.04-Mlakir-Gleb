@@ -41,7 +41,7 @@ export function DashboardInsightsCard({
   return (
     <Card className="p-6">
       <div className="space-y-4">
-        <h2 className="text-lg font-semibold text-slate-950">ИИ-отчёт по отзывам</h2>
+        <h2 className="text-lg font-semibold text-slate-950">Аналитический отчёт</h2>
         <div className="flex w-fit flex-wrap items-end gap-3 rounded-3xl border border-slate-200 bg-slate-50 p-3">
           {isAdmin && (
             <div className="w-[180px]">
@@ -49,7 +49,7 @@ export function DashboardInsightsCard({
                 Лимит
               </span>
               <Select
-                aria-label="Лимит отзывов для ИИ-отчёта"
+                aria-label="Лимит отзывов для аналитического отчёта"
                 value={insightsLimit}
                 onChange={(event) => onLimitChange(event.target.value)}
                 options={[
@@ -71,9 +71,9 @@ export function DashboardInsightsCard({
               ? 'Формируем отчёт...'
               : insightsData
                 ? insightsOpen
-                  ? 'Скрыть ИИ-отчёт'
-                  : 'Показать ИИ-отчёт'
-                : 'Сформировать ИИ-отчёт'}
+                  ? 'Скрыть аналитический отчёт'
+                  : 'Показать аналитический отчёт'
+                : 'Сформировать аналитический отчёт'}
           </Button>
           {isAdmin && insightsData && (
             <Button
@@ -94,7 +94,7 @@ export function DashboardInsightsCard({
       {!insightsOpen && !insightsData && !isPending && !insightsError && (
         <div className="mt-5 rounded-3xl border border-dashed border-slate-200 bg-slate-50/70 p-5">
           <p className="text-sm leading-7 text-slate-600">
-            Сформируйте ИИ-отчёт, чтобы получить краткую сводку по сильным сторонам,
+            Сформируйте аналитический отчёт, чтобы получить краткую сводку по сильным сторонам,
             проблемам и рекомендациям на основе выбранных отзывов.
           </p>
         </div>

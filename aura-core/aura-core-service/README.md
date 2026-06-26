@@ -7,7 +7,6 @@
 `aura-core-service` отвечает за:
 
 - API для организаций, источников, отзывов и dashboard
-- импорт CSV
 - scraping внешних источников
 - запуск и учёт collection jobs
 - orchestration batch-анализа через `aura-analysis-service`
@@ -19,7 +18,6 @@
 - `GET /api/organizations`
 - `POST /api/sources`
 - `GET /api/sources`
-- `POST /api/sources/{sourceId}/import`
 - `POST /api/collection/run/{sourceId}`
 - `GET /api/reviews`
 - `POST /api/reviews/reanalyze`
@@ -31,7 +29,6 @@
 
 Поддерживаются:
 
-- `MANUAL_IMPORT`
 - `TABITURIENT`
 - `OTZOVIK`
 - `VUZOPEDIA`

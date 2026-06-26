@@ -34,7 +34,6 @@ import type {
 } from '../types/review'
 import type {
   CreateSourceRequestDto,
-  ManualImportResponseDto,
   SourceFilters,
   SourceResponseDto,
   UpdateSourceRequestDto,
@@ -124,22 +123,6 @@ function createInitialSession(): MockSession {
     },
     {
       id: 2,
-      organization: { id: 1, name: organizations[0].name, shortName: organizations[0].shortName },
-      name: 'Импорт отзывов приёмной комиссии',
-      type: 'MANUAL_IMPORT',
-      baseUrl: 'manual://csv',
-      collectionMode: 'SCHEDULED',
-      scheduleEnabled: true,
-      scheduleIntervalMinutes: 1440,
-      lastCollectedAt: '2026-05-26T02:00:00Z',
-      nextCollectionAt: '2026-06-04T02:00:00Z',
-      description: 'Внутренние выгрузки и анкеты абитуриентов.',
-      createdAt: '2026-02-01T09:00:00Z',
-      updatedAt: '2026-05-26T02:00:00Z',
-      isActive: true,
-    },
-    {
-      id: 3,
       organization: { id: 2, name: organizations[1].name, shortName: organizations[1].shortName },
       name: 'Otzovik ТОГУ',
       type: 'OTZOVIK',
@@ -155,7 +138,7 @@ function createInitialSession(): MockSession {
       isActive: true,
     },
     {
-      id: 4,
+      id: 3,
       organization: { id: 2, name: organizations[1].name, shortName: organizations[1].shortName },
       name: 'Vuzopedia ТОГУ',
       type: 'VUZOPEDIA',
@@ -204,48 +187,6 @@ function createInitialSession(): MockSession {
     {
       id: 3,
       sourceId: 2,
-      sourceName: 'Импорт отзывов приёмной комиссии',
-      externalId: 'csv-001',
-      text: 'Поступление прошло организованно, но ответы приёмной комиссии были медленными.',
-      authorName: 'Мария',
-      rating: 4,
-      publishedAt: '2026-04-05T08:30:00Z',
-      collectedAt: '2026-04-05T09:00:00Z',
-      status: 'ANALYZED',
-      analysis: createAnalysis('NEUTRAL', 'ADMINISTRATION', ['приёмная комиссия', 'поступление'], 0.86),
-      originalUrl: null,
-    },
-    {
-      id: 4,
-      sourceId: 2,
-      sourceName: 'Импорт отзывов приёмной комиссии',
-      externalId: 'csv-002',
-      text: 'Очень понравилась атмосфера и студенческие мероприятия.',
-      authorName: 'Егор',
-      rating: 5,
-      publishedAt: '2026-04-16T12:00:00Z',
-      collectedAt: '2026-04-16T13:00:00Z',
-      status: 'ANALYZED',
-      analysis: createAnalysis('POSITIVE', 'STUDENT_LIFE', ['атмосфера', 'мероприятия'], 0.93),
-      originalUrl: null,
-    },
-    {
-      id: 5,
-      sourceId: 2,
-      sourceName: 'Импорт отзывов приёмной комиссии',
-      externalId: 'csv-003',
-      text: 'Расписание менялось слишком часто, информация доходила с задержкой.',
-      authorName: 'Ольга',
-      rating: 3,
-      publishedAt: '2026-04-24T12:00:00Z',
-      collectedAt: '2026-04-24T13:00:00Z',
-      status: 'FAILED_ANALYSIS',
-      analysis: null,
-      originalUrl: null,
-    },
-    {
-      id: 6,
-      sourceId: 3,
       sourceName: 'Otzovik ТОГУ',
       externalId: 'ot-501',
       text: 'Хороший уровень преподавания, но корпусам нужен ремонт.',
@@ -258,8 +199,8 @@ function createInitialSession(): MockSession {
       originalUrl: 'https://otzovik.com/review_501.html',
     },
     {
-      id: 7,
-      sourceId: 3,
+      id: 4,
+      sourceId: 2,
       sourceName: 'Otzovik ТОГУ',
       externalId: 'ot-502',
       text: 'Преподаватели помогают, на кафедре всегда можно получить обратную связь.',
@@ -272,8 +213,8 @@ function createInitialSession(): MockSession {
       originalUrl: 'https://otzovik.com/review_502.html',
     },
     {
-      id: 8,
-      sourceId: 4,
+      id: 5,
+      sourceId: 3,
       sourceName: 'Vuzopedia ТОГУ',
       externalId: 'vz-77',
       text: 'Есть интересные направления, но общежитие оказалось переполненным.',
@@ -286,8 +227,8 @@ function createInitialSession(): MockSession {
       originalUrl: 'https://vuzopedia.ru/review/77',
     },
     {
-      id: 9,
-      sourceId: 4,
+      id: 6,
+      sourceId: 3,
       sourceName: 'Vuzopedia ТОГУ',
       externalId: 'vz-78',
       text: 'Студенческая жизнь живая, часто проходят хакатоны и встречи с работодателями.',
@@ -300,7 +241,7 @@ function createInitialSession(): MockSession {
       originalUrl: 'https://vuzopedia.ru/review/78',
     },
     {
-      id: 10,
+      id: 7,
       sourceId: 1,
       sourceName: 'Tabiturient ДВФУ',
       externalId: 'tb-103',
@@ -314,22 +255,8 @@ function createInitialSession(): MockSession {
       originalUrl: 'https://tabiturient.ru/vuzu/dvfu/review-103',
     },
     {
-      id: 11,
-      sourceId: 2,
-      sourceName: 'Импорт отзывов приёмной комиссии',
-      externalId: 'csv-004',
-      text: 'Удобный личный кабинет абитуриента и понятные инструкции.',
-      authorName: 'Сергей',
-      rating: 5,
-      publishedAt: '2026-05-15T08:30:00Z',
-      collectedAt: '2026-05-15T09:00:00Z',
-      status: 'ANALYZED',
-      analysis: createAnalysis('POSITIVE', 'ADMINISTRATION', ['личный кабинет', 'инструкции'], 0.91),
-      originalUrl: null,
-    },
-    {
-      id: 12,
-      sourceId: 4,
+      id: 8,
+      sourceId: 3,
       sourceName: 'Vuzopedia ТОГУ',
       externalId: 'vz-79',
       text: 'Учиться интересно, но добираться до кампуса неудобно.',
@@ -640,43 +567,6 @@ class MockDatabase {
     return source
   }
 
-  importReviews(sourceId: number, file: File) {
-    const source = this.getSourceById(sourceId)
-    const importedCount = 3
-    const createdAt = nowIso()
-
-    Array.from({ length: importedCount }).forEach((_, index) => {
-      const review: ReviewResponseDto = {
-        id: this.nextId(this.state.reviews),
-        sourceId,
-        sourceName: source.name,
-        externalId: `mock-import-${Date.now()}-${index + 1}`,
-        text: `Импортированный отзыв ${index + 1} из файла ${file.name}. Макетный режим показывает автономный сценарий без backend.`,
-        authorName: 'Demo import',
-        rating: 4,
-        publishedAt: createdAt,
-        collectedAt: createdAt,
-        status: 'ANALYZED',
-        analysis: createAnalysis('POSITIVE', 'OTHER', ['импорт', 'демо'], 0.78),
-        originalUrl: null,
-      }
-      this.state.reviews.unshift(review)
-    })
-
-    source.lastCollectedAt = createdAt
-    source.updatedAt = createdAt
-    this.save()
-
-    return {
-      sourceId,
-      fileName: file.name,
-      totalRows: 3,
-      importedCount,
-      duplicateCount: 0,
-      invalidCount: 0,
-    } satisfies ManualImportResponseDto
-  }
-
   runCollection(sourceId: number) {
     const source = this.getSourceById(sourceId)
     const timestamp = nowIso()
@@ -703,7 +593,7 @@ class MockDatabase {
       collectedAt: timestamp,
       status: 'ANALYZED',
       analysis: createAnalysis('POSITIVE', 'OTHER', ['демо', 'сбор'], 0.74),
-      originalUrl: source.type === 'MANUAL_IMPORT' ? null : source.baseUrl,
+      originalUrl: source.baseUrl,
     }
 
     this.state.jobs.unshift(job)
@@ -923,8 +813,6 @@ export const mockSourcesApi = {
   createSource: async (payload: CreateSourceRequestDto) => asyncResult(mockDb.createSource(payload)),
   updateSource: async (id: number, payload: UpdateSourceRequestDto) =>
     asyncResult(mockDb.updateSource(id, payload)),
-  importReviews: async (sourceId: number, file: File) =>
-    asyncResult(mockDb.importReviews(sourceId, file), 250),
   deleteSource: async () => asyncResult(undefined),
 }
 

@@ -11,13 +11,13 @@ import { formatUserRole } from '../../lib/format'
 const navItems = [
   { to: '/dashboard', label: 'Дашборд', adminOnly: false },
   { to: '/organizations', label: 'Организации', adminOnly: false },
-  { to: '/sources', label: 'Источники', adminOnly: true },
   {
     to: '/custom-sources',
     label: 'Платформы',
     adminOnly: false,
     badge: IS_MOCKUP_UI_MODE ? undefined : 'Beta',
   },
+  { to: '/sources', label: 'Источники', adminOnly: true },
   { to: '/reviews', label: 'Отзывы', adminOnly: false },
 ]
 

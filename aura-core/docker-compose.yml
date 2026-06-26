@@ -1,0 +1,17 @@
+services:
+  aura-core-database:
+    image: 'postgres:16-alpine'
+    container_name: ${DB_HOST:-aura-core-database}
+    hostname: ${DB_HOST:-aura-core-database}
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USER:-aura}
+      POSTGRES_PASSWORD: ${DB_PASS:-aura}
+      POSTGRES_DB: ${DB_NAME:-aura}
+    volumes:
+      - db:/var/lib/postgresql/data
+    ports:
+      - "${DB_PORT:-5433}:5432"
+
+volumes:
+  db:

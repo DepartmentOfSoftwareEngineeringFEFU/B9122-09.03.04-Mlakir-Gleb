@@ -1,0 +1,3 @@
+mlakir.aura.auth.AuraAuthAutoConfiguration
+mlakir.aura.auth.config.FeignAuthHeaderConfig
+mlakir.aura.auth.config.SwaggerConfig

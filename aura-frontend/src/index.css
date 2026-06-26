@@ -1,0 +1,171 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Manrope", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --color-background: #f5f7fb;
+  --color-surface: #ffffff;
+  --color-surface-subtle: #f8fafc;
+  --color-border: #e2e8f0;
+  --color-text: #0f172a;
+  --color-text-soft: #475569;
+  --color-primary: #2563eb;
+  --color-primary-soft: #dbeafe;
+  --color-success: #15803d;
+  --color-success-soft: #dcfce7;
+  --color-danger: #dc2626;
+  --color-danger-soft: #fee2e2;
+  --color-warning: #d97706;
+  --color-warning-soft: #ffedd5;
+  --color-neutral: #64748b;
+  --color-neutral-soft: #e2e8f0;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    @apply bg-background text-text antialiased;
+  }
+
+  body {
+    @apply m-0 min-h-screen bg-slate-50 text-sm text-text;
+  }
+
+  a {
+    @apply text-inherit no-underline;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+  }
+
+  #root {
+    @apply min-h-screen;
+  }
+}
+
+@layer components {
+  .surface-card {
+    @apply rounded-3xl border border-slate-200 bg-white shadow-[0_18px_38px_-30px_rgba(15,23,42,0.22)];
+  }
+
+  .field-base {
+    @apply w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-blue-400 focus:ring-4 focus:ring-blue-100;
+  }
+
+  .table-shell {
+    @apply overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_18px_38px_-30px_rgba(15,23,42,0.22)];
+  }
+}
+
+@layer base {
+  :root[data-ui-mode='mockup'] body {
+    background: #fff;
+    color: #111827;
+  }
+
+  :root[data-ui-mode='mockup'] * {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  :root[data-ui-mode='mockup'] .surface-card,
+  :root[data-ui-mode='mockup'] .table-shell,
+  :root[data-ui-mode='mockup'] .app-shell-panel {
+    border-radius: 0;
+    border-color: #d1d5db;
+    box-shadow: none;
+    background: #fff;
+  }
+
+  :root[data-ui-mode='mockup'] .field-base {
+    border-radius: 0;
+    border-color: #9ca3af;
+    box-shadow: none;
+    background: #fff;
+    padding: 0.625rem 0.75rem;
+  }
+
+  :root[data-ui-mode='mockup'] .ui-button {
+    border-radius: 0;
+    box-shadow: none;
+    border: 1px solid #9ca3af;
+    background: #fff;
+    color: #111827;
+  }
+
+  :root[data-ui-mode='mockup'] .ui-button:hover {
+    background: #f9fafb;
+  }
+
+  :root[data-ui-mode='mockup'] .ui-button:focus-visible,
+  :root[data-ui-mode='mockup'] .field-base:focus {
+    outline: 1px solid #6b7280;
+    outline-offset: 0;
+    box-shadow: none;
+  }
+
+  :root[data-ui-mode='mockup'] .bg-slate-950,
+  :root[data-ui-mode='mockup'] .bg-blue-50,
+  :root[data-ui-mode='mockup'] .bg-amber-100,
+  :root[data-ui-mode='mockup'] .bg-rose-50,
+  :root[data-ui-mode='mockup'] .bg-slate-50,
+  :root[data-ui-mode='mockup'] .bg-white {
+    background: #fff !important;
+  }
+
+  :root[data-ui-mode='mockup'] .text-white,
+  :root[data-ui-mode='mockup'] .text-blue-700,
+  :root[data-ui-mode='mockup'] .text-amber-800,
+  :root[data-ui-mode='mockup'] .text-rose-700,
+  :root[data-ui-mode='mockup'] .text-slate-400,
+  :root[data-ui-mode='mockup'] .text-slate-500,
+  :root[data-ui-mode='mockup'] .text-slate-600,
+  :root[data-ui-mode='mockup'] .text-slate-700,
+  :root[data-ui-mode='mockup'] .text-slate-900,
+  :root[data-ui-mode='mockup'] .text-slate-950 {
+    color: #111827 !important;
+  }
+
+  :root[data-ui-mode='mockup'] .rounded-2xl,
+  :root[data-ui-mode='mockup'] .rounded-3xl,
+  :root[data-ui-mode='mockup'] .rounded-full {
+    border-radius: 0 !important;
+  }
+
+  :root[data-ui-mode='mockup'] .shadow-lg,
+  :root[data-ui-mode='mockup'] .shadow-\[0_18px_38px_-30px_rgba\(15\,23\,42\,0\.22\)\] {
+    box-shadow: none !important;
+  }
+
+  :root[data-ui-mode='mockup'] table,
+  :root[data-ui-mode='mockup'] th,
+  :root[data-ui-mode='mockup'] td {
+    border-color: #d1d5db !important;
+  }
+
+  :root[data-ui-mode='mockup'] h1,
+  :root[data-ui-mode='mockup'] h2,
+  :root[data-ui-mode='mockup'] h3,
+  :root[data-ui-mode='mockup'] p,
+  :root[data-ui-mode='mockup'] span,
+  :root[data-ui-mode='mockup'] label,
+  :root[data-ui-mode='mockup'] a,
+  :root[data-ui-mode='mockup'] button,
+  :root[data-ui-mode='mockup'] input,
+  :root[data-ui-mode='mockup'] select,
+  :root[data-ui-mode='mockup'] textarea {
+    letter-spacing: 0;
+  }
+
+  :root[data-ui-mode='mockup'] nav a[aria-current='page'] {
+    font-weight: 700;
+    text-decoration: underline;
+    background: #fff !important;
+  }
+}

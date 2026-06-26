@@ -1,0 +1,17 @@
+from enum import Enum
+
+
+class Sentiment(str, Enum):
+    POSITIVE = "POSITIVE"
+    NEUTRAL = "NEUTRAL"
+    NEGATIVE = "NEGATIVE"
+
+
+class Topic(str, Enum):
+    EDUCATION = "EDUCATION"
+    TEACHERS = "TEACHERS"
+    INFRASTRUCTURE = "INFRASTRUCTURE"
+    DORMITORY = "DORMITORY"
+    ADMINISTRATION = "ADMINISTRATION"
+    STUDENT_LIFE = "STUDENT_LIFE"
+    OTHER = "OTHER"

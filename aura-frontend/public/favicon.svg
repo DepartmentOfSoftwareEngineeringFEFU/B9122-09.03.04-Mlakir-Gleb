@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="aura-bg" x1="10" y1="8" x2="54" y2="56" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8B5CF6" />
+      <stop offset="1" stop-color="#2563EB" />
+    </linearGradient>
+    <linearGradient id="aura-mark" x1="24" y1="18" x2="42" y2="44" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F8FAFC" />
+      <stop offset="1" stop-color="#DBEAFE" />
+    </linearGradient>
+  </defs>
+
+  <rect x="6" y="6" width="52" height="52" rx="16" fill="url(#aura-bg)" />
+  <path
+    d="M25.5 18h13.2c5.1 0 9.3 4.2 9.3 9.3v7.6c0 5.1-4.2 9.3-9.3 9.3h-5.4l-8.8 6.8c-.8.6-1.9 0-1.9-1v-5.8h-1.3c-5.1 0-9.3-4.2-9.3-9.3v-7.6c0-5.1 4.2-9.3 9.3-9.3h4.2Z"
+    fill="url(#aura-mark)"
+  />
+  <path
+    d="M31.4 23.4 24 34.2h6.4l-1.8 8.4L40 29.7h-6.3l2-6.3Z"
+    fill="#4C1D95"
+  />
+</svg>

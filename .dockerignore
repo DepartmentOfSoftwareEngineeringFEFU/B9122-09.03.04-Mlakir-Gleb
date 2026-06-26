@@ -1,0 +1,14 @@
+.DS_Store
+.env
+.git
+**/.git
+**/.idea
+**/.vscode
+**/target
+**/node_modules
+**/dist
+**/.tmp-tests
+**/.venv
+**/.pytest_cache
+**/__pycache__
+**/reports

@@ -1,0 +1,21 @@
+.DS_Store
+.env
+
+# Java
+**/target/
+
+# Python
+**/.venv/
+**/.pytest_cache/
+**/__pycache__/
+**/reports/
+
+# Frontend
+**/node_modules/
+**/dist/
+**/.tmp-tests/
+**/*.tsbuildinfo
+
+# IDE
+**/.idea/
+**/.vscode/

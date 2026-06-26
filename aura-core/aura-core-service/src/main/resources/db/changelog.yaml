@@ -1,0 +1,4 @@
+databaseChangeLog:
+  - includeAll:
+      path: db/scripts
+      errorIfMissingOrEmpty: true

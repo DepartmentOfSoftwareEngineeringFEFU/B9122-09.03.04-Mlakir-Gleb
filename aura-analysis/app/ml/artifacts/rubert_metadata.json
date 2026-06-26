@@ -1,0 +1,20 @@
+{
+  "mode": "RUBERT_EMBEDDINGS",
+  "modelVersion": "rubert-embeddings-0.1.0",
+  "rubertModelName": "cointegrated/rubert-tiny2",
+  "trainedAt": "2026-05-13T06:20:33Z",
+  "sentimentClasses": [
+    "POSITIVE",
+    "NEUTRAL",
+    "NEGATIVE"
+  ],
+  "topicClasses": [
+    "EDUCATION",
+    "TEACHERS",
+    "INFRASTRUCTURE",
+    "DORMITORY",
+    "ADMINISTRATION",
+    "STUDENT_LIFE",
+    "OTHER"
+  ]
+}
